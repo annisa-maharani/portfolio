@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} {{ post }} {% endblock %}
+
+{% block content %}
+<!-- modal Create Comment -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Berikan Komentar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal -->
+
+<div class="bg-pink-2">
+    <div class="container d-flex flex-column align-items-center">
+        <img src="{% static 'beauty/img/0002.png' %}" alt="Notepad" class="img-fluid">
+        <h1 class="text-white">{{ post }}</h1>
+        <p class="text-white">Posted on {{ post.date_create }}</p>
+    </div>
+</div>
+
+<div class="container container-fluid my-5 bg-white px-0 break-text">
+    <div class="card-header mt-0 mb-3">
+        <a href="/" class="btn btn-info"><i class="bi bi-arrow-left-square"></i> Back</a>
+    </div>
+    <div class="row mx-auto">
+        <div class="col-lg-12" id="content">
+            <div class="text-justify">{{ post.content | safe }}</div>
+        </div>
+    </div>
+
+    <div class="card-footer mb-5">
+        <div id="comments1">
+            <div class="d-flex justify-content-end position-static sticky-top">
+                <a href="#collapseExample" data-toggle="collapse" class="btn btn-primary mx-1">Berikan Komentar</a>
+                <form action="{% url 'beauty:like' post.link %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btn-pink mx-1">
+                        <i class="bi bi-heart-fill"></i> {{ post.likes }}
+                    </button>
+                </form>
+
+            </div>
+            <div class="collapse" id="collapseExample">
+                <div class="card bg-transparent card-body border-0">
+                    <form action="{% url 'beauty:add-comment' post.link %}" method="post" enctype="multipart/form-data">
+                        {% load crispy_forms_tags %}
+                        {% csrf_token %}
+                        {{ form.media }}
+                        {{ form | crispy }}
+                        <div class="form-group">
+                            <button class="btn btn-primary">Add Comment</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container container-fluid pb-5 bg-white px-0 break-text mb-5">
+    <div class="card-header mb-5">
+        <h4>Comments</h4>
+    </div>
+    <div class="row mx-auto" id="comments">
+        <div class="col-lg-8 mx-auto">
+            {% for comment in comments %}
+            <div class="mt-4">
+                <div class="font-weight-bold">{{ comment.name }}</div>
+                <div>
+                    {{ comment.comment | safe }}
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'beauty/js/config.js' %}"></script>
+{% endblock %}

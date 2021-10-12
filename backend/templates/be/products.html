@@ -1,0 +1,53 @@
+{% extends 'my.html' %}
+{% load static %}
+{% block title %} CPanel Home {% endblock %}
+
+{% block content %}
+<div class="bg-pink">
+    <div class="container d-flex flex-column align-items-center">
+        <img src="{% static 'beauty/img/0001.png' %}" alt="Content Creator" class="img-fluid mx-auto">
+    </div>
+</div>
+
+<div class="container my-5">
+    <div class="card">
+        <div class="card-header">
+            <div class="d-flex justify-content-end">
+                <a href="{% url 'my:create' %}" class="btn btn-primary"> Create Post</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-responsive-lg" id="post">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in products %}
+                    <tr>
+                        <td>{{ product }}</td>
+                        <td>{{ post.p_date_create }}</td>
+                        <td>
+                            <form action="{% url 'my:update' product.p_link %}">
+                                <button class="btn btn-success"> Update </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form action="{% url 'my:delete' product.p_link %}">
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                        <td><a href="{% url 'my:preview' product.link %}">{{ product.p_link }}</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Home {% endblock %}
+
+{% block content %}
+<div class="bg-pink-2">
+    <div class="container d-flex flex-column align-items-center">
+        <img src="{% static 'beauty/img/0002.png' %}" alt="Image" class="img-fluid">
+    </div>
+</div>
+
+<!-- profiles -->
+<div class="py-5 bg-white mb-0">
+    <div class="container">
+        <div class="row mx-auto">
+            <div class="col-lg-12 mx-auto">
+                <h3>Hi Saya {{ profile.nick_name }}</h3>
+                <div class="row mx-auto" >
+                    <div class="col-lg-4 mx-auto">
+                        <img src="{{ profile.profile_img.url }}" alt="Annisa Maharani" class="img-fluid">
+                    </div>
+                    <div class="col-lg-8 mx-auto">
+                        <h4>{{ profile }}</h4>
+                        <hr>
+                        <div class="text-justify">
+                            {{ profile.desc | safe }}
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-end">
+                            {% for socmed in profile.social_media.all %}
+                            <div class="item social">
+                                <a href="{{ socmed.redirect }}" target="_blank"><i class="{{ socmed.social.icon }}"></i></a>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row mx-auto py-5">
+        <div class="col-lg-6 my-auto">
+            <img src="{% static 'beauty/img/0003.png' %}" alt="Blog" class="img-fluid">
+        </div>
+        <div class="col-lg-6 mx-auto">
+             <h1 class="">Latest Post</h1>
+            <div class="card border-0 bg-transparent">
+                {% for post in latest %}
+                <div class="card-body">
+                    <a href="{% url 'beauty:detail' post.link %}" class="text-green text-decoration-none">
+                        <h3>{{ post.title }}</h3>
+                        <h4 class="text-truncate">{{ post.content | safe }}</h4>
+                    </a>
+                    <small class="text-muted">di upload pada tanggal </small>
+                </div>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end profiles -->
+{% endblock %}

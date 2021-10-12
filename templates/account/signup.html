@@ -1,0 +1,77 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<!--<h1>{% trans "Sign Up" %}</h1>-->
+
+<!--<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>-->
+
+<!--<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">-->
+<!--  {% csrf_token %}-->
+<!--  {{ form.as_p }}-->
+<!--  {% if redirect_field_value %}-->
+<!--  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />-->
+<!--  {% endif %}-->
+<!--  <button type="submit">{% trans "Sign Up" %} &raquo;</button>-->
+<!--</form>-->
+
+    <div class="container-fluid">
+        <div class="main-row row">
+            <div class="ilustration-container col-md-7 bg-info d-md-flex d-none">
+                <img src="{% static 'images/ilustrasi-login.svg' %}" alt="ilustrasi" class="img-fluid" style="object-fit: contain;">
+
+            </div>
+            <div class="col-md-5 col-12 d-flex align-items-center justify-content-center">
+                <form action="#login" method="POST" class="w-75">
+                    <div class="form-group">
+                        <h2 class="font-weight-bold text-center">Sign Up</h2>
+                    </div>
+                    {% csrf_token %}
+                    {% load crispy_forms_tags %}
+                    <div class="form-group">
+                        {{form | crispy}}
+                    </div>
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+<!--                    <div class="form-group">-->
+<!--                        <h2 class="font-weight-bold text-center">Login</h2>-->
+<!--                        <label for="email">Email</label>-->
+<!--                        <div class="input-group">-->
+<!--                            <div class="input-group-prepend">-->
+<!--                                <span class="input-group-text">-->
+<!--                                    <i class="fas fa-envelope"></i>-->
+<!--                                </span>-->
+<!--                            </div>-->
+<!--                            <input type="email" class="form-control" id="email" placeholder="Enter email">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="password">Password</label>-->
+<!--                        <div class="input-group">-->
+<!--                            <div class="input-group-prepend">-->
+<!--                                <span class="input-group-text">-->
+<!--                                    <i class="fas fa-key"></i>-->
+<!--                                </span>-->
+<!--                            </div>-->
+<!--                            <input type="password" class="form-control" id="password" placeholder="Enter password">-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info w-100">Sign Up</button>
+                    </div>
+                    <div class="form-group" style="text-align: center;">
+                        <a href="/accounts/login/" class="text-primary">
+                            Click Here If you Already Have an Account
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+{% load static %}
+{% load i18n %}
+{% load l10n %}
+{% load tz %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'beauty/css/config.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}
+    {% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!--    <div class="container">-->
+        <a class="navbar-brand" href="{% url 'my:home' %}">Cpanel</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'my:media-manager' %}">Media</a>
+                </li>
+                <li class="nav-item">
+                    <a href="" class="nav-link"> Products </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'my:create' %}">Create Post</a>
+                </li>
+<!--                <li class="nav-item dropdown">-->
+<!--                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
+<!--                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+<!--                        More Action-->
+<!--                    </a>-->
+<!--                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                        <a class="dropdown-item" href="#">Action</a>-->
+<!--                        <a class="dropdown-item" href="#">Another action</a>-->
+<!--                        <div class="dropdown-divider"></div>-->
+<!--                        <a class="dropdown-item" href="#">Something else here</a>-->
+<!--                    </div>-->
+<!--                </li>-->
+
+            </ul>
+
+        </div>
+<!--    </div>-->
+</nav>
+{% block content %}
+{% endblock %}
+<footer>
+    <div class="card">
+        <div class="card-body">
+            <div class="py-5" id="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 mt-4">
+                            <h3>BACA <span class="text-primary">BUKU</span></h3>
+                            <p>Belajar apapun disini melalui buku yang sudah tersedia diwebsite ini.</p>
+                            <div class="d-flex">
+                                <a href="https://www.instagram.com/smktelkomjakarta/"></a>
+                                <a href="https://www.facebook.com/smktelkomjkt"></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 mt-4">
+                            <h4>Link Cepat</h4>
+                            <div class="d-flex flex-column ">
+                                <a href="/book/" class="text-primary">List buku</a>
+                                <a href="/accounts/signup/" class="text-primary">Register</a>
+                                <a href="/accounts/login/" class="text-primary">Login</a>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 mt-4">
+                            <h4> Resource</h4>
+                            <div class="d-flex flex-column">
+                                <a href="https://unsplash.com/">Unsplash</a>
+                                <a href="https://www.freepik.com/">Freepik</a>
+                                <a href="https://smktelkom-jkt.sch.id/">Smk Telkom Jakarta</a>
+
+                            </div>
+                        </div>
+                        <div class="col-lg-3 mt-4">
+                            <h4>Lokasi</h4>
+                            <a href="https://www.google.com/maps/place/SMK+Telkom+Jakarta/@-6.1544783,106.7485692,17z/data=!3m1!4b1!4m5!3m4!1s0x2e69f7c113c644b5:0xa3a809c8c4627262!8m2!3d-6.1544783!4d106.7507579?hl=id"><img
+                                    src="/static/images/lokasi.jpg" class="img-fluid"></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"
+        integrity="sha384-+YQ4JLhjyBLPDQt//I+STsc9iw4uQqACwlvpslubQzn4u2UU2UFM80nGisd026JF"
+        crossorigin="anonymous"></script>
+{% block scripts %}
+{% endblock %}
+
+</body>
+</html>

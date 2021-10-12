@@ -1,0 +1,109 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load static %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Login To E-Libs" %}{% endblock %}
+
+{% block content %}
+
+<!--<h1>{% trans "Sign In" %}</h1>-->
+
+<!--{% get_providers as socialaccount_providers %}-->
+
+<!--{% if socialaccount_providers %}-->
+<!--<p>{% blocktrans with site.name as site_name %}Please sign in with one-->
+<!--of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>-->
+<!--for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>-->
+
+<!--<div class="socialaccount_ballot">-->
+
+<!--  <ul class="socialaccount_providers">-->
+<!--    {% include "socialaccount/snippets/provider_list.html" with process="login" %}-->
+<!--  </ul>-->
+
+<!--  <div class="login-or">{% trans 'or' %}</div>-->
+
+<!--</div>-->
+
+<!--{% include "socialaccount/snippets/login_extra.html" %}-->
+
+<!--{% else %}-->
+<!--<p>{% blocktrans %}If you have not created an account yet, then please-->
+<!--<a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>-->
+<!--{% endif %}-->
+
+<!--<form class="login" method="POST" action="{% url 'account_login' %}">-->
+<!--  {% csrf_token %}-->
+<!--  {{ form.as_p }}-->
+<!--  {% if redirect_field_value %}-->
+<!--  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />-->
+<!--  {% endif %}-->
+<!--  <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>-->
+<!--  <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>-->
+<!--</form>-->
+
+    <div class="container-fluid">
+        <div class="main-row row">
+            <div class="ilustration-container col-md-7 bg-info d-md-flex d-none">
+                <img src="{% static 'images/ilustrasi-login.svg' %}" alt="ilustrasi" class="img-fluid" style="object-fit: contain;">
+
+            </div>
+            <div class="col-md-5 col-12 d-flex align-items-center justify-content-center">
+                <form action="#login" method="POST" class="w-75">
+                    <div class="form-group">
+                        <h2 class="font-weight-bold text-center">Login</h2>
+                    </div>
+                    {% csrf_token %}
+                    {% load crispy_forms_tags %}
+                    <div class="form-group">
+                        {{form | crispy}}
+                    </div>
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                    {% endif %}
+<!--                    <div class="form-group">-->
+<!--                        <h2 class="font-weight-bold text-center">Login</h2>-->
+<!--                        <label for="email">Email</label>-->
+<!--                        <div class="input-group">-->
+<!--                            <div class="input-group-prepend">-->
+<!--                                <span class="input-group-text">-->
+<!--                                    <i class="fas fa-envelope"></i>-->
+<!--                                </span>-->
+<!--                            </div>-->
+<!--                            <input type="email" class="form-control" id="email" placeholder="Enter email">-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="password">Password</label>-->
+<!--                        <div class="input-group">-->
+<!--                            <div class="input-group-prepend">-->
+<!--                                <span class="input-group-text">-->
+<!--                                    <i class="fas fa-key"></i>-->
+<!--                                </span>-->
+<!--                            </div>-->
+<!--                            <input type="password" class="form-control" id="password" placeholder="Enter password">-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info w-100">Login</button>
+                    </div>
+                    <div class="form-group">
+                        <a type="button" class="btn btn-secondary w-100" href="/accounts/google/login/?process=login">
+                            <i class="fab fa-google"></i>
+                            Login
+                        </a>
+                    </div>
+                    <div class="form-group" style="text-align: center;">
+                        Click Here If you <a class="button text-decoration-none secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password" %}</a>
+                    </div>
+                    <div class="form-group" style="text-align: center;">
+                        Create E-Libs Account <a href="/accounts/signup/" class="text-decoration-none">Here</a> If You doesn't Have
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

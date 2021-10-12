@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {% load crispy_forms_tags %}
+    {{ form.media }}
+    <input type="file" name="file" id="file" class="form-control-file" multiple>
+    <button type="submit">Save</button>
+</form>
+
+</body>
+</html>

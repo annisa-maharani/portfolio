@@ -1,0 +1,14 @@
+{% extends 'my.html' %}
+{% block title %} Preview Page {% endblock %}
+
+{% block content %}
+    <div class="container container-fluid bg-white px-2 py-5 break-text my-5">
+        <div class="row mx-auto">
+            <div class="col-lg-12 col-12" id="content">
+                <div class="text-justify">
+                    {{ post.content | safe }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

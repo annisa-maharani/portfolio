@@ -1,0 +1,99 @@
+{% extends 'my.html' %}
+{% block title %}Media Manager{% endblock %}
+
+{% block content %}
+<!-- modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Upload a File</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'my:media-upload' %}" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        {% csrf_token %}
+                        <input type="file" name="file" id="file" class="form-control-file" multiple>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary"><i class="bi bi-cloud-upload"></i> Upload</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Delete All Files</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'my:delete-all' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <button class="btn btn-danger"><i class="bi bi-trash"></i> Delete All</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- modal end -->
+
+<div class="bg-transparent bg-pink">
+    <div class="py-5">
+        <div class="d-flex justify-content-end mb-3 row mx-auto px-2">
+
+
+            <button href="" class="btn btn-primary col-sm-2 mx-2 " data-toggle="modal" data-target="#exampleModal"><i class="bi bi-cloud-upload-fill"></i> Upload Media</button>
+            <button href="" class="btn btn-danger col-sm-2 mx-2" data-toggle="modal" data-target="#exampleModal2"><i class="bi bi-trash"></i> Delete All Media</button>
+
+        </div>
+        <div class="row mx-auto">
+            {% for file in media %}
+            <div class="col-lg-3 mb-4">
+                <div class="card">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <img src="{{ file.file.url }}" alt="Media Image" class="img-fluid embed-responsive-item">
+                    </div>
+                    <div class="card-body">
+                        <input type="text" name="img_link" id="img_link_{{file.pk}}" value="{{ file.file.url }}" onclick="copy({{file.pk}})" class="form-control" >
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $('#myModal').on('shown.bs.modal', function () {
+        $('#myInput').trigger('focus')
+    })
+</script>
+<script>
+    function copy(lv) {
+        let ids = 'img_link_' + lv;
+        ids.replace(" ", "_");
+        let copyText = document.getElementById(ids);
+        copyText.select();
+        copyText.setSelectionRange(0, 9999);
+        navigator.clipboard.writeText(copyText.value);
+    }
+
+</script>
+{% endblock %}
