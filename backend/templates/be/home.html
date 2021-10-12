@@ -19,34 +19,70 @@
         <div class="card-body">
             <table class="table table-responsive-lg" id="post">
                 <thead class="thead-light">
-                    <tr>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Update</th>
-                        <th scope="col">Delete</th>
-                        <th scope="col">Handle</th>
-                    </tr>
+                <tr>
+                    <th scope="col">First</th>
+                    <th scope="col">Last</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>
+                    <th scope="col">Handle</th>
+                </tr>
                 </thead>
                 <tbody>
-                    {% for post in post %}
-                    <tr>
-                        <td>{{ post }}</td>
-                        <td>{{ post.date_create }}</td>
-                        <td>
-                            <form action="{% url 'my:update' post.link %}">
-                                <button class="btn btn-success"> Update </button>
-                            </form>
-                        </td>
-                        <td>
-                            <form action="{% url 'my:delete' post.link %}">
-                                <button class="btn btn-danger">Delete</button>
-                            </form>
-                        </td>
-                        <td><a href="{% url 'my:preview' post.link %}">{{ post.link }}</a></td>
-                    </tr>
-                    {% endfor %}
+                {% for post in post %}
+                <tr>
+                    <td>{{ post }}</td>
+                    <td>{{ post.date_create }}</td>
+                    <td>
+                        <form action="{% url 'my:update' post.link %}">
+                            <button class="btn btn-success"> Update</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="{% url 'my:delete' post.link %}">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+                    <td><a href="{% url 'my:preview' post.link %}">{{ post.link }}</a></td>
+                </tr>
+                {% endfor %}
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center py-4">
+                {% if is_paginated %}
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}#post"
+                               aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">begin</span>
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% for n in page_obj.paginator.page_range %}
+                        {% if page_obj.number == n %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+                        </li>
+                        {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+                        <li class="page-item"><a class="page-link" href="?page={{ n }}#post">{{ n }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}#post" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">end</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

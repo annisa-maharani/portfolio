@@ -7,12 +7,15 @@ from django.utils.decorators import method_decorator
 
 
 link = 'link'
+p_link = 'p_link'
 
 
 class AdminHome(ListView):
     template_name = "be/home.html"
     model = Post
     context_object_name = 'post'
+    ordering = ['-id']
+    paginate_by = 10
 
     @method_decorator(login_required(login_url='/admin/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -171,6 +174,26 @@ def delete_all_media(request):
     return redirect("my:media-manager")
 
 
+""" Profile Editing """
+
+
+def profile_edit(request):
+    profile = get_object_or_404(Profile, pk=1)
+    form = UpdateProfileForm(request.POST or None, request.FILES or None, instance=profile)
+    if form.is_valid():
+        form.save()
+        return redirect('my:home')
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'be/create.html', context)
+
+
+""" Products """
+
+
 class ProductsList(ListView):
     model = ProductReview
     template_name = 'be/products.html'
@@ -181,3 +204,67 @@ class ProductsList(ListView):
     def dispatch(self, request, *args, **kwargs):
         return super(ProductsList, self).dispatch(request, *args, **kwargs)
 
+
+class CreateProducts(CreateView):
+    model = ProductReview
+    form_class = CreateProductForm
+    template_name = 'be/create.html'
+
+    def get_success_url(self):
+        return reverse('my:products')
+
+    def form_valid(self, form):
+        bad_chars = [';', ':', '!', "*", '!', '@', '#', '$', '%', '^', '&', '(', ')']
+        _link = form.cleaned_data['p_title']
+        _link = _link.replace(' ', '-')
+
+        for i in bad_chars:
+            if bad_chars[-3] in _link:
+                _link = _link.replace(i, 'n')
+            _link = _link.replace(i, '')
+
+        if _link[-1] == '-':
+            _link = _link[:-1]
+            if _link[-1] == '-':
+                _link = _link[:-1]
+
+        form.instance.p_link = _link.lower()
+        return super(CreateProducts, self).form_valid(form)
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(CreateProducts, self).dispatch(request, *args, **kwargs)
+
+
+class UpdateProductPost(UpdateView):
+    model = ProductReview
+    template_name = 'be/create.html'
+    form_class = CreateProductForm
+    query_pk_and_slug = True
+    slug_field = p_link
+    slug_url_kwarg = p_link
+
+    def get_success_url(self):
+        return reverse('my:update-product', args=[self.object.p_link])
+
+    def form_valid(self, form):
+        bad_chars = [';', ':', '!', "*", '!', '@', '#', '$', '%', '^', '&', '(', ')']
+        _link = form.cleaned_data['p_title']
+        _link = _link.replace(' ', '-')
+
+        for i in bad_chars:
+            if bad_chars[-3] in _link:
+                _link = _link.replace(i, 'n')
+            _link = _link.replace(i, '')
+
+        if _link[-1] == '-':
+            _link = _link[:-1]
+            if _link[-1] == '-':
+                _link = _link[:-1]
+
+        form.instance.p_link = _link.lower()
+        return super(UpdateProductPost, self).form_valid(form)
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UpdateProductPost, self).dispatch(request, *args, **kwargs)

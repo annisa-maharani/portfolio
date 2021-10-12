@@ -13,5 +13,8 @@ urlpatterns = [
     path('media/upload', MediaUpload.as_view(), name='media-upload'),
     path('media/upload/test', MediaUploadTest, name='media-upload-test'),
     path('media/delete-all', delete_all_media, name='delete-all'),
-
+    path('profile', profile_edit, name='profile'),
+    path('products', ProductsList.as_view(), name='products'),
+    path('products/create', CreateProducts.as_view(), name='create-product'),
+    path('products/update/<p_link>', UpdateProductPost.as_view(), name='update-product'),
 ]
