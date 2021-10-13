@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import *
-from backend.models import Profile, Post
+from backend.models import Profile, Post, ProductReview
 from .forms import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
@@ -16,7 +16,9 @@ class MainPage(TemplateView):
         context = super(MainPage, self).get_context_data(**kwargs)
         profile = get_object_or_404(Profile, pk=1)
         latest = Post.objects.all()[:3]
+        pro_latest = ProductReview.objects.all()[:3]
 
+        context['products'] = pro_latest
         context['profile'] = profile
         context['latest'] = latest
         return context

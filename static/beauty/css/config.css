@@ -195,3 +195,16 @@ header.masthead .post-heading .meta a {
         font-size: 36px
     }
 }
+
+.btn-aero-blue {
+    background-color: #BDEDE0 !important;
+}
+
+.btn-aero-blue a {
+    background-color: #BDEDE0 !important;
+}
+
+.btn-aero-blue:hover {
+    background-color: #68998c !important;
+    color: white !important;
+}

@@ -14,8 +14,8 @@
     <div class="container">
         <div class="row mx-auto">
             <div class="col-lg-12 mx-auto">
-                <h3>Hi Saya {{ profile.nick_name }}</h3>
-                <div class="row mx-auto" >
+                <h3 class="ml-3">Hi Saya {{ profile.nick_name }}</h3>
+                <div class="row mx-auto">
                     <div class="col-lg-4 mx-auto">
                         <img src="{{ profile.profile_img.url }}" alt="Annisa Maharani" class="img-fluid">
                     </div>
@@ -47,8 +47,8 @@
             <img src="{% static 'beauty/img/0003.png' %}" alt="Blog" class="img-fluid">
         </div>
         <div class="col-lg-6 mx-auto">
-             <h1 class="">Latest Post</h1>
             <div class="card border-0 bg-transparent">
+                <h1 class="ml-3">Latest Post</h1>
                 {% for post in latest %}
                 <div class="card-body">
                     <a href="{% url 'beauty:detail' post.link %}" class="text-green text-decoration-none">
@@ -59,8 +59,52 @@
                 </div>
                 <hr>
                 {% endfor %}
+                <a href="" class="btn btn-aero-blue"> Hai There</a>
             </div>
         </div>
+    </div>
+</div>
+
+<div class="row mx-auto bg-white py-5">
+    <div class="col-lg-10 col-10 mx-auto">
+        <h2 class="modal-title mb-5"> Products </h2>
+        {% for prod in products %}
+
+        {% if forloop.counter|divisibleby:2 == 0 %}
+        <div class="card mb-4 mx-auto" style="max-width: fit-content;">
+            <div class="row mx-auto no-gutters">
+                <div class="col-lg-8 col-8 my-auto">
+                    <div class="card-body ">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                            additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-4 my-auto">
+                    <img src="{{ prod.p_img }}" alt="Tender Care" class="img-fluid">
+                </div>
+            </div>
+        </div>
+        {% else %}
+
+        <div class="card mb-4 mx-auto" style="max-width: fit-content;">
+            <div class="row mx-auto no-gutters">
+                <div class="col-lg-4 col-4 my-auto">
+                    <img src="{{ prod.p_img }}" alt="Tender Care" class="img-fluid">
+                </div>
+                <div class="col-lg-8 col-8 my-auto">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                            additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
     </div>
 </div>
 <!-- end profiles -->

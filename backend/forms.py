@@ -22,7 +22,7 @@ class CreatePostForm(forms.ModelForm):
 class CreateProductForm(forms.ModelForm):
     class Meta:
         model = ProductReview
-        fields = ['p_title', 'p_content', 'p_desc', 'p_keyword']
+        fields = ['p_title', 'p_img', 'p_content', 'p_desc', 'p_keyword']
 
         widgets = {
             'p_keyword': forms.TextInput(),

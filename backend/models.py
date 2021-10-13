@@ -60,6 +60,7 @@ class MediaManager(models.Model):
 
 class ProductReview(models.Model):
     p_title = models.CharField(max_length=255, verbose_name='Nama Produk')
+    p_img = models.CharField(verbose_name='Link Gambar Produk', default='', max_length=255)
     p_link = models.SlugField(max_length=255, unique=True)
     p_content = RichTextField(verbose_name='Content')
     p_desc = models.TextField(verbose_name='Simple Description')
