@@ -1,6 +1,12 @@
 from django import forms
 from .models import *
 
+soc_med = SocialMedia.objects.all()
+soc_med_list = []
+
+for sm in soc_med:
+    soc_med_list.append(soc_med)
+
 
 class CreatePostForm(forms.ModelForm):
     class Meta:
@@ -28,4 +34,8 @@ class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = '__all__'
+
+        widgets = {
+            'social_media': forms.CheckboxSelectMultiple(choices=soc_med_list)
+        }
 

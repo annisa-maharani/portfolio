@@ -22,9 +22,9 @@ class SocialMedia(models.Model):
 class Profile(models.Model):
     name = models.CharField(max_length=255, verbose_name="Nama Kamu  ")
     nick_name = models.CharField(max_length=255, default="Annisa Maharani", verbose_name="Nama Panggilan")
-    desc = RichTextField(verbose_name="Deskripsi Singkat  ")
+    desc = RichTextField(verbose_name="Deskripsi Singkat Tentang Kamu : ")
     profile_img = models.ImageField(upload_to='profile', verbose_name="Foto Profil ")
-    social_media = models.ManyToManyField(SocialMedia, blank=True)
+    social_media = models.ManyToManyField(SocialMedia, blank=True, verbose_name="Shared Social Media : ")
 
     def __str__(self):
         return self.name

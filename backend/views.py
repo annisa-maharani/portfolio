@@ -17,7 +17,7 @@ class AdminHome(ListView):
     ordering = ['-id']
     paginate_by = 10
 
-    @method_decorator(login_required(login_url='/admin/login/'))
+    @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(AdminHome, self).dispatch(request, *args, **kwargs)
 
@@ -29,6 +29,22 @@ class CreatePost(CreateView):
 
     def get_success_url(self):
         return reverse('my:update', args=[self.object.link])
+
+    def get_context_data(self, **kwargs):
+        context = super(CreatePost, self).get_context_data(**kwargs)
+        back = self.request.GET.get('b')
+
+        def b_url():
+            if back is not None:
+                """ 1 is for post and 2 is for products """
+                if back == '1':
+                    return True
+                else:
+                    return False
+
+        context['back'] = b_url()
+
+        return context
 
     def form_valid(self, form):
         bad_chars = [';', ':', '!', "*", '!', '@', '#', '$', '%', '^', '&', '(', ')']
@@ -231,8 +247,25 @@ class CreateProducts(CreateView):
         form.instance.p_link = _link.lower()
         return super(CreateProducts, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super(CreateProducts, self).get_context_data(**kwargs)
+        back = self.request.GET.get('b')
+
+        def b_url():
+            if back is not None:
+                """ 1 is for post and 2 is for products """
+                if back == '1':
+                    return True
+                else:
+                    return False
+
+        context['back'] = b_url()
+
+        return context
+
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
+        print(self.request.GET.get('b'))
         return super(CreateProducts, self).dispatch(request, *args, **kwargs)
 
 
@@ -268,3 +301,32 @@ class UpdateProductPost(UpdateView):
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(UpdateProductPost, self).dispatch(request, *args, **kwargs)
+
+
+class DeleteProductPost(DeleteView):
+    model = ProductReview
+    template_name = 'be/delete.html'
+    query_pk_and_slug = True
+    slug_field = p_link
+    slug_url_kwarg = p_link
+    context_object_name = 'post'
+
+    def get_success_url(self):
+        return reverse('my:products')
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(DeleteProductPost, self).dispatch(request, *args, **kwargs)
+
+
+class ReviewProductsPost(DetailView):
+    model = ProductReview
+    template_name = 'be/preview.html'
+    query_pk_and_slug = True
+    slug_url_kwarg = p_link
+    slug_field = p_link
+    context_object_name = 'post'
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ReviewProductsPost, self).dispatch(request, *args, **kwargs)

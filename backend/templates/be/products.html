@@ -13,7 +13,10 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-end">
-                <a href="{% url 'my:create-product' %}" class="btn btn-primary"> Create Products Post</a>
+                <form action="{% url 'my:create-product' %}" method="get" enctype="multipart/form-data">
+                    <input type="text" name="b" id="b" value="2" hidden>
+                    <button class="btn btn-primary" > Create Products Post</button>
+                </form>
             </div>
         </div>
         <div class="card-body">
@@ -38,7 +41,7 @@
                         </form>
                     </td>
                     <td>
-                        <form action="{% url 'my:delete' product.p_link %}">
+                        <form action="{% url 'my:pr-delete' product.p_link %}">
                             <button class="btn btn-danger">Delete</button>
                         </form>
                     </td>

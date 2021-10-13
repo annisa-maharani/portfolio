@@ -14,7 +14,12 @@
 <div class="container my-5">
     <div class="card">
         <div class="card-header">
-            <a href="{% url 'my:home' %}" class="btn btn-info"> Back </a>
+            {% if post.link %}
+                <a href="{% url 'my:home' %}" class="btn btn-info"> Back </a>
+            {% else %}
+                <a href="{% url 'my:products' %}" class="btn btn-info"> Back </a>
+            {% endif %}
+
         </div>
         <div class="card-body">
             <form method="post" enctype="multipart/form-data">
@@ -23,10 +28,16 @@
                 {{ form | crispy }}
                 <h1 class="text-danger">Post To Delete : </h1>
                 <h5>Name : {{ post }}</h5>
-                <h5>Link : {{ post.link }}</h5>
+                <h5>Link :
+                    {% if post.link %}
+                        {{ post.link }}
+                    {% else %}
+                        {{ post.p_link }}
+                    {% endif %}
+                </h5>
 
                 <div class="form-group">
-                    <button class="btn btn-danger"> Delete </button>
+                    <button class="btn btn-danger"> Delete</button>
                 </div>
             </form>
         </div>

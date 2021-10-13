@@ -14,7 +14,11 @@
 <div class="container my-5">
     <div class="card">
         <div class="card-header">
-            <a href="{% url 'my:home' %}" class="btn btn-info"> Back </a>
+            {% if back %}
+                <a href="{% url 'my:home' %}" class="btn btn-info"> Back </a>
+            {% else %}
+                <a href="{% url 'my:products' %}" class="btn btn-info"> Back </a>
+            {% endif %}
         </div>
         <div class="card-body">
             <form method="post" enctype="multipart/form-data">

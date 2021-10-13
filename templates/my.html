@@ -31,7 +31,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/wpcp-admin/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'my:media-manager' %}">Media</a>
@@ -44,14 +44,20 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="{% url 'my:products' %}">Products List</a>
-                        <a class="dropdown-item" href="{% url 'my:create-product' %}">Create Product Post</a>
+                        <form action="{% url 'my:create-product' %}" method="get" enctype="multipart/form-data">
+                            <input type="text" name="b" id="b" value="2" hidden>
+                            <button class="dropdown-item" >Create Product Post</button>
+                        </form>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'my:create' %}">Create Post</a>
+                    <form action="{% url 'my:create' %}" method="get" enctype="multipart/form-data">
+                        <input type="text" name="b" value="1" hidden>
+                        <button class="nav-link btn btn-link" href="">Create Post</button>
+                    </form>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'my:profile' %}">Edit Profile</a>
