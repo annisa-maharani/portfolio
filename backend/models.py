@@ -44,7 +44,7 @@ class Post(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('my:update', args=[self.link])
+        return reverse('beauty:detail', args=[self.link])
 
 
 class MediaManager(models.Model):
@@ -71,3 +71,6 @@ class ProductReview(models.Model):
 
     def __str__(self):
         return f"{self.p_title} about {self.p_content[:60]} see more "
+
+    def get_absolute_url(self):
+        return reverse('my:update-product', args=[self.p_link])

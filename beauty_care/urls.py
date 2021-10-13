@@ -18,6 +18,15 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.static import serve
+from django.contrib.sitemaps.views import sitemap
+from backend.sitemaps import PostSitemaps, ProductsSitemaps
+
+
+sitemaps = {
+    'post': PostSitemaps,
+    'product': ProductsSitemaps
+}
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,7 +35,8 @@ urlpatterns = [
     path('static/<path>', serve, settings.STATIC_ROOT),
     path('media/<path>', serve, settings.MEDIA_ROOT),
     path('wpcp-admin/', include('backend.urls', namespace="my")),
-
+    path('robots.txt', include('robots.urls')),
+    path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
 ]
 
 if not settings.DEBUG or settings.DEBUG:

@@ -39,18 +39,28 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.sitemaps',
 
     'beauty',
     'backend',
     'api',
     'ckeditor',
     'crispy_forms',
+    'robots',
 
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 ]
+
+ROBOTS_USE_SCHEME_IN_HOST = True
+ROBOTS_USE_SITEMAP = True
+ROBOTS_SITEMAP_URLS = {
+    '/sitemap.xml'
+}
+ROBOTS_SITEMAP_VIEW_NAME = 'sitemap'
+ROBOTS_CACHE_TIMEOUT = 60 * 60 * 24
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -152,7 +162,7 @@ ACCOUNT_LOGOUT_REDIRECT_URL = "/"
 ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
-SESSION_COOKIE_AGE = 60*60*12
+SESSION_COOKIE_AGE = 60 * 60 * 12
 
 CKEDITOR_CONFIGS = {
     'default': {
