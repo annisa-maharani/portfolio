@@ -1,6 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %} {{ post }} {% endblock %}
+
+{% block title %}
+{% if pro_post %}
+    {{ post.title | safe }}
+{% else %}
+    {{ post.p_title | safe }}
+{% endif %}
+{% endblock %}
 
 {% block content %}
 <!-- modal Create Comment -->
@@ -39,7 +46,20 @@
     </div>
     <div class="row mx-auto">
         <div class="col-lg-12" id="content">
-            <div class="text-justify">{{ post.content | safe }}</div>
+            <h2>
+                {% if pro_post %}
+                    {{ post.title | safe }}
+                {% else %}
+                    {{ post.p_title | safe }}
+                {% endif %}
+            </h2>
+            <div class="text-justify">
+                {% if pro_post %}
+                    {{ post.content | safe }}
+                {% else %}
+                    {{ post.p_content | safe }}
+                {% endif %}
+            </div>
         </div>
     </div>
 
@@ -47,7 +67,7 @@
         <div id="comments1">
             <div class="d-flex justify-content-end position-static sticky-top">
                 <a href="#collapseExample" data-toggle="collapse" class="btn btn-primary mx-1">Berikan Komentar</a>
-                <form action="{% url 'beauty:like' post.link %}" method="post">
+                <form action="" method="post">
                     {% csrf_token %}
                     <button class="btn btn-pink mx-1">
                         <i class="bi bi-heart-fill"></i> {{ post.likes }}
@@ -57,7 +77,7 @@
             </div>
             <div class="collapse" id="collapseExample">
                 <div class="card bg-transparent card-body border-0">
-                    <form action="{% url 'beauty:add-comment' post.link %}" method="post" enctype="multipart/form-data">
+                    <form action="" method="post" enctype="multipart/form-data">
                         {% load crispy_forms_tags %}
                         {% csrf_token %}
                         {{ form.media }}

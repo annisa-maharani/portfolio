@@ -5,8 +5,10 @@ from .forms import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.db.models import Q as __
+from django.http import Http404
 
 links = 'link'
+p_link = 'p_link'
 
 
 class MainPage(TemplateView):
@@ -57,15 +59,32 @@ class PageListView(ListView):
 
     def get_queryset(self):
         q = self.request.GET.get('q')
-
-        if q is not None:
-            post = Post.objects.filter(
-                __(title__icontains=q) | __(content__icontains=q) |
-                __(desc__icontains=q) | __(keyword__icontains=q)
-            ).order_by(self.ordering)
+        pd = self.request.GET.get('pd')
+        post = Post.objects.all()
+        if pd is not None:
+            if q is not None:
+                post = Post.objects.filter(
+                    __(title__icontains=q) | __(content__icontains=q) |
+                    __(desc__icontains=q) | __(keyword__icontains=q)
+                ).order_by(self.ordering)
+                return post
+        else:
             return post
 
-        return Post.objects.all()
+    def get_context_data(self, **kwargs):
+        context = super(PageListView, self).get_context_data(**kwargs)
+        pd = self.request.GET.get('pd')
+        if pd is not None:
+            if pd == '1':
+                desk = True
+            else:
+                desk = False
+
+        else:
+            desk = True
+
+        context['desk'] = desk
+        return context
 
 
 class AddComment(CreateView):
@@ -81,15 +100,71 @@ class AddComment(CreateView):
             if comment is None:
                 return 0
             return int(comment.pk)
-        
+
         if not self.request.POST.get('name'):
             form.instance.name = f"Anonymous{current_pk()}"
         else:
             form.instance.name = self.request.POST.get('name')
-            
+
         post = get_object_or_404(Post, link=self.kwargs['link'])
         form.instance.post = post
         return super(AddComment, self).form_valid(form)
+
+
+class ProductDetail(DetailView):
+    slug_field = p_link
+    slug_url_kwarg = p_link
+    query_pk_and_slug = True
+    model = ProductReview
+    template_name = 'beauty/detail.html'
+    context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetail, self).get_context_data(**kwargs)
+        pew = self.request.GET.get('pp')
+        pro_post = True
+        """ pew == 1 post and pew == 2 is products """
+        if pew == '1':
+            pro_post = True
+        else:
+            pro_post = False
+
+        context['con'] = pro_post
+        return context
+
+
+class ProductList(ListView):
+    model = ProductReview
+    template_name = 'beauty/list.html'
+    ordering = '-id'
+    paginate_by = 5
+    context_object_name = 'post'
+
+    def get_queryset(self):
+        q = self.request.GET.get('q')
+        prod = ProductReview.objects.all()
+        if q is not None:
+            prod = ProductReview.objects.filter(
+                __(p_ttile__icontains=q) | __(p_content__icontains=q) |
+                __(p_desc__icontains=q) | __(p_keyword__icontains=q)
+            ).order_by(self.ordering)
+            return prod
+        else:
+            return prod
+
+    def get_context_data(self, **kwargs):
+        context = super(ProductList, self).get_context_data(**kwargs)
+        pd = self.request.GET.get('pd')
+        if pd is not None:
+            if pd == '1':
+                desk = True
+            else:
+                desk = False
+        else:
+            desk = False
+
+        context['desk'] = desk
+        return context
 
 
 def add_likes(request, link):
@@ -99,6 +174,3 @@ def add_likes(request, link):
             post.likes += 1
             post.save()
     return HttpResponseRedirect(reverse('beauty:detail', args=[link]))
-
-
-

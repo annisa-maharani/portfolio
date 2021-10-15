@@ -69,6 +69,9 @@ class ProductReview(models.Model):
     p_date_update = models.DateField(auto_now_add=True)
     p_likes = models.IntegerField(default=0, verbose_name='likes')
 
+    def contents(self):
+        return self.p_content[:100]
+
     def __str__(self):
         return f"{self.p_title} about {self.p_content[:60]} see more "
 

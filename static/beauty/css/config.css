@@ -208,3 +208,11 @@ header.masthead .post-heading .meta a {
     background-color: #68998c !important;
     color: white !important;
 }
+
+.bg-lite-blue {
+    background-color: #e4f4fc !important;
+}
+
+.font-times-new-roman {
+    font-family:Times New Roman,Times,serif;
+}
