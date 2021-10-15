@@ -28,14 +28,14 @@
                     {% if desk %}
                     <a href="{% url 'beauty:detail' post.link %}">
                     {% else %}
-                    <a href="{% url 'beauty:detail' post.p_link %}">
+                    <a href="{% url 'beauty:pro-detail' post.p_link %}">
                     {% endif %}
 
                         <h2 class="post-title">
                             {% if desk %}
                             {{ post.title }}
                             {% else %}
-                            {{ post.p_link }}
+                            {{ post.p_title }}
                             {% endif %}
                         </h2>
                         <div class="text-truncate">{{ post.content | safe}}</div>

@@ -24,17 +24,47 @@
 <body>
 
 <!-- modal search -->
+<!-- Modal Pencarian blog　-->
 <div class="modal fade" id="modalSearch" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Berikan Komentar</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Pencarian Laman Blog</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form action="{% url 'beauty:list' %}" method="get">
+                    <div class="form-group">
+                        <label for="searchInput">Search</label>
+                        <input type="text" name="q" id="searchInput" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary">Search</button>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal pencarian halaman prodiuk-->
+<div class="modal fade" id="modalSearch2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Pencarian Laman Produk</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'beauty:pro-list' %}" method="get">
                     <div class="form-group">
                         <label for="searchInput">Search</label>
                         <input type="text" name="q" id="searchInput" class="form-control">
@@ -61,11 +91,27 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav mx-auto">
-            <a class="nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
-            <a href="{% url 'beauty:list' %}" class="nav-link"> Post List</a>
-            <a class="nav-link" href="#modalSearch" data-toggle="modal">Cari Posting <i class="bi bi-search"></i></a>
-        </div>
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item active">
+                <a class="nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'beauty:list' %}" class="nav-link"> Post List</a>
+            </li>
+            <li class="nav-item">
+               <a href="{% url 'beauty:list' %}" class="nav-link"> Product List</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Pencarian
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="nav-link" href="#modalSearch" data-toggle="modal">Cari Halaman Blog <i class="bi bi-search"></i></a>
+                    <a class="nav-link" href="#modalSearch2" data-toggle="modal">Cari Halaman Produk <i class="bi bi-search"></i></a>
+                </div>
+            </li>
+        </ul>
     </div>
 
 </nav>

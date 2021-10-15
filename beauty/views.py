@@ -145,7 +145,7 @@ class ProductList(ListView):
         prod = ProductReview.objects.all()
         if q is not None:
             prod = ProductReview.objects.filter(
-                __(p_ttile__icontains=q) | __(p_content__icontains=q) |
+                __(p_title__icontains=q) | __(p_content__icontains=q) |
                 __(p_desc__icontains=q) | __(p_keyword__icontains=q)
             ).order_by(self.ordering)
             return prod
