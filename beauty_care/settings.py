@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'crispy_forms',
     'robots',
+    'rest_framework',
 
     'allauth',
     'allauth.account',
@@ -157,8 +158,8 @@ STATIC_ROOT = join(BASE_DIR, 'static/root')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = join(BASE_DIR, 'media')
 
-LOGIN_REDIRECT_URL = '/'
-ACCOUNT_LOGOUT_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = '/wpcp-admin/'
+ACCOUNT_LOGOUT_REDIRECT_URL = "/accounts/login"
 ACCOUNT_SIGNUP_REDIRECT_URL = '/accounts/login/'
 ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = '/'
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
@@ -170,8 +171,8 @@ CKEDITOR_CONFIGS = {
         'width': '100%',
     },
     'special': {
-        'toolbar': 'Special',
-        'toolbar_Special': [
+        'width': 'fit-content',
+        'toolbar': [
             ['Bold', 'Italic', 'Underline', 'Strike', 'AlignLeft', 'Subscript', 'Superscript', ],
             ['Source']
         ],

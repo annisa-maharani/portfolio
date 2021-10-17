@@ -30,6 +30,7 @@ sitemaps = {
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include('api.urls', namespace='api')),
     path('download/<path>', serve, settings.MEDIA_ROOT),
     path('accounts/', include('allauth.urls')),
     path('static/<path>', serve, settings.STATIC_ROOT),

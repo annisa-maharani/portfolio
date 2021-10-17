@@ -76,4 +76,4 @@ class ProductReview(models.Model):
         return f"{self.p_title} about {self.p_content[:60]} see more "
 
     def get_absolute_url(self):
-        return reverse('my:update-product', args=[self.p_link])
+        return reverse('beauty:pro-detail', args=[self.p_link])

@@ -21,53 +21,51 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-<!--    <div class="container">-->
-        <a class="navbar-brand" href="{% url 'my:home' %}">Cpanel</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+    <a class="navbar-brand" href="{% url 'my:home' %}">Cpanel</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="/wpcp-admin/">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'my:media-manager' %}">Media</a>
-                </li>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mx-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/wpcp-admin/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'my:media-manager' %}">Media</a>
+            </li>
 
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Products
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{% url 'my:products' %}">Products List</a>
-                        <form action="{% url 'my:create-product' %}" method="get" enctype="multipart/form-data">
-                            <input type="text" name="b" id="b" value="2" hidden>
-                            <button class="dropdown-item" >Create Product Post</button>
-                        </form>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-
-                <li class="nav-item">
-                    <form action="{% url 'my:create' %}" method="get" enctype="multipart/form-data">
-                        <input type="text" name="b" value="1" hidden>
-                        <button class="nav-link btn btn-link" href="">Create Post</button>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Products
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'my:products' %}">Products List</a>
+                    <form action="{% url 'my:create-product' %}" method="get" enctype="multipart/form-data">
+                        <input type="text" name="b" id="b" value="2" hidden>
+                        <button class="dropdown-item">Create Product Post</button>
                     </form>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'my:profile' %}">Edit Profile</a>
-                </li>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
 
-
-            </ul>
-
-        </div>
-<!--    </div>-->
+            <li class="nav-item">
+                <form action="{% url 'my:create' %}" method="get" enctype="multipart/form-data">
+                    <input type="text" name="b" value="1" hidden>
+                    <button class="nav-link btn btn-link" href="">Create Post</button>
+                </form>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'my:profile' %}">Edit Profile</a>
+            </li>
+        </ul>
+        {% if user.is_authenticated %}
+        <a class="mr-0 text-danger navbar-brand" href="/accounts/logout/">Logout</a>
+        {% endif %}
+    </div>
 </nav>
 {% block content %}
 {% endblock %}

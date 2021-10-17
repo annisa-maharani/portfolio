@@ -1,0 +1,16 @@
+.main-row{
+    min-height: 100vh;
+}
+
+.ilustration-container{
+    position: relative;
+    max-height: 100vh;
+    padding: 2rem;
+}
+
+.ilustration-attribution{
+    position: absolute;
+    width: 100%;
+    bottom: 1rem;
+    color: white;
+}
