@@ -6,7 +6,11 @@
         <div class="row mx-auto">
             <div class="col-lg-12 col-12" id="content">
                 <div class="text-justify">
+                    {% if page %}
                     {{ post.content | safe }}
+                    {% else %}
+                    {{ post.p_content | safe }}
+                    {% endif %}
                 </div>
             </div>
         </div>

@@ -35,7 +35,7 @@
 <div class="bg-pink-2">
     <div class="container d-flex flex-column align-items-center">
         <img src="{% static 'beauty/img/0002.png' %}" alt="Notepad" class="img-fluid">
-        <h1 class="text-white">{{ post }}</h1>
+
         <p class="text-white">Posted on {{ post.date_create }}</p>
     </div>
 </div>
@@ -92,6 +92,7 @@
     </div>
 </div>
 
+{% if comments %}
 <div class="container container-fluid pb-5 bg-white px-0 break-text mb-5">
     <div class="card-header mb-5">
         <h4>Comments</h4>
@@ -111,6 +112,7 @@
     </div>
 
 </div>
+{% endif %}
 {% endblock %}
 
 {% block js %}

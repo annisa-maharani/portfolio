@@ -45,7 +45,7 @@
                             <button class="btn btn-danger">Delete</button>
                         </form>
                     </td>
-                    <td><a href="{% url 'my:preview' product.p_link %}">{{ product.p_link }}</a></td>
+                    <td><a target="_blank" href="{% url 'my:pr-review' product.p_link %}">{{ product.p_link }}</a></td>
                 </tr>
                 {% endfor %}
                 </tbody>

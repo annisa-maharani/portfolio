@@ -59,15 +59,13 @@ class PageListView(ListView):
 
     def get_queryset(self):
         q = self.request.GET.get('q')
-        pd = self.request.GET.get('pd')
         post = Post.objects.all()
-        if pd is not None:
-            if q is not None:
-                post = Post.objects.filter(
-                    __(title__icontains=q) | __(content__icontains=q) |
-                    __(desc__icontains=q) | __(keyword__icontains=q)
-                ).order_by(self.ordering)
-                return post
+        if q is not None:
+            post = Post.objects.filter(
+                __(title__icontains=q) | __(content__icontains=q) |
+                __(desc__icontains=q) | __(keyword__icontains=q)
+            ).order_by(self.ordering)
+            return post
         else:
             return post
 

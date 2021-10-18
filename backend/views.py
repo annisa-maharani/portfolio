@@ -167,6 +167,13 @@ class PreviewPage(DetailView):
     slug_field = link
     slug_url_kwarg = link
 
+    def get_context_data(self, **kwargs):
+        context = super(PreviewPage, self).get_context_data(**kwargs)
+        page = True
+
+        context['page'] = page
+        return context
+
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(PreviewPage, self).dispatch(request, *args, **kwargs)
@@ -326,6 +333,13 @@ class ReviewProductsPost(DetailView):
     slug_url_kwarg = p_link
     slug_field = p_link
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super(ReviewProductsPost, self).get_context_data(**kwargs)
+        page = False
+
+        context['page'] = page
+        return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
