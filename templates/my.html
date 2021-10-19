@@ -69,49 +69,8 @@
 </nav>
 {% block content %}
 {% endblock %}
-<footer>
-    <div class="card">
-        <div class="card-body">
-            <div class="py-5" id="footer">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-3 mt-4">
-                            <h3>BACA <span class="text-primary">BUKU</span></h3>
-                            <p>Belajar apapun disini melalui buku yang sudah tersedia diwebsite ini.</p>
-                            <div class="d-flex">
-                                <a href="https://www.instagram.com/smktelkomjakarta/"></a>
-                                <a href="https://www.facebook.com/smktelkomjkt"></a>
-                            </div>
-                        </div>
-                        <div class="col-lg-3 mt-4">
-                            <h4>Link Cepat</h4>
-                            <div class="d-flex flex-column ">
-                                <a href="/book/" class="text-primary">List buku</a>
-                                <a href="/accounts/signup/" class="text-primary">Register</a>
-                                <a href="/accounts/login/" class="text-primary">Login</a>
-                            </div>
 
-                        </div>
-                        <div class="col-lg-3 mt-4">
-                            <h4> Resource</h4>
-                            <div class="d-flex flex-column">
-                                <a href="https://unsplash.com/">Unsplash</a>
-                                <a href="https://www.freepik.com/">Freepik</a>
-                                <a href="https://smktelkom-jkt.sch.id/">Smk Telkom Jakarta</a>
-
-                            </div>
-                        </div>
-                        <div class="col-lg-3 mt-4">
-                            <h4>Lokasi</h4>
-                            <a href="https://www.google.com/maps/place/SMK+Telkom+Jakarta/@-6.1544783,106.7485692,17z/data=!3m1!4b1!4m5!3m4!1s0x2e69f7c113c644b5:0xa3a809c8c4627262!8m2!3d-6.1544783!4d106.7507579?hl=id"><img
-                                    src="/static/images/lokasi.jpg" class="img-fluid"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
+{% include 'footer.html' %}
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

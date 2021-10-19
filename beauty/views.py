@@ -1,14 +1,14 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import *
 from backend.models import Profile, Post, ProductReview
 from .forms import *
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.db.models import Q as __
-from django.http import Http404
+from django.http import HttpResponseRedirect
 
 links = 'link'
-p_link = 'p_link'
+p_links = 'p_link'
 
 
 class MainPage(TemplateView):
@@ -43,9 +43,12 @@ class PageDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PageDetail, self).get_context_data(**kwargs)
         form = AddCommentForm
-        comments = PostComment.objects.all()
+        this = get_object_or_404(Post, link=self.kwargs[links])
+        comments = PostComment.objects.filter(post=this)
+        pro_post = True
 
         context['form'] = form
+        context['pro_post'] = pro_post
         context['comments'] = comments
         return context
 
@@ -88,9 +91,12 @@ class PageListView(ListView):
 class AddComment(CreateView):
     model = PostComment
     form_class = AddCommentForm
+    query_pk_and_slug = True
+    slug_field = links
+    slug_url_kwarg = links
 
     def get_success_url(self):
-        return reverse('beauty:detail', kwargs={'link': self.kwargs[link]})
+        return reverse('beauty:detail', args=[self.kwargs[links]])
 
     def form_valid(self, form):
         def current_pk():
@@ -100,18 +106,22 @@ class AddComment(CreateView):
             return int(comment.pk)
 
         if not self.request.POST.get('name'):
-            form.instance.name = f"Anonymous{current_pk()}"
+            form.instance.name = f"Unknown User{current_pk()}"
         else:
             form.instance.name = self.request.POST.get('name')
-
         post = get_object_or_404(Post, link=self.kwargs['link'])
         form.instance.post = post
-        return super(AddComment, self).form_valid(form)
+        return super().form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.POST.get('comment'):
+            return HttpResponseRedirect(reverse('beauty:detail', args=[self.kwargs[links]]))
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ProductDetail(DetailView):
-    slug_field = p_link
-    slug_url_kwarg = p_link
+    slug_field = p_links
+    slug_url_kwarg = p_links
     query_pk_and_slug = True
     model = ProductReview
     template_name = 'beauty/detail.html'
@@ -120,15 +130,50 @@ class ProductDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProductDetail, self).get_context_data(**kwargs)
         pew = self.request.GET.get('pp')
-        pro_post = True
+        form = AddProductCommentForm
+        this = get_object_or_404(ProductReview, p_link=self.kwargs[p_links])
+        comments = ProductComment.objects.filter(product_id=this.pk)
         """ pew == 1 post and pew == 2 is products """
         if pew == '1':
             pro_post = True
         else:
             pro_post = False
 
+        context['form'] = form
+        context['comments'] = comments
         context['con'] = pro_post
         return context
+
+
+class CreateProductComment(CreateView):
+    model = ProductComment
+    query_pk_and_slug = True
+    slug_url_kwarg = p_links
+    slug_field = p_links
+    form_class = AddProductCommentForm
+
+    def get_success_url(self):
+        return reverse('beauty:pro-detail', args=[self.kwargs[p_links]])
+
+    def form_valid(self, form):
+        def current_pk():
+            pro = ProductReview.objects.all().order_by('-id').first()
+            if not pro:
+                return 0
+            return int(pro.pk)
+
+        if not self.request.POST.get('name'):
+            form.instance.name = f"Unknown User{current_pk()}"
+        else:
+            form.instance.name = form.cleaned_data['name']
+        this = get_object_or_404(ProductReview, p_link=self.kwargs[p_links])
+        form.instance.product_id = this.pk
+        return super().form_valid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.POST.get('comment'):
+            return HttpResponseRedirect(reverse('beauty:pro-detail', kwargs={'p_link': self.kwargs[p_links]}))
+        return super().dispatch(request, *args, **kwargs)
 
 
 class ProductList(ListView):
@@ -172,3 +217,12 @@ def add_likes(request, link):
             post.likes += 1
             post.save()
     return HttpResponseRedirect(reverse('beauty:detail', args=[link]))
+
+
+def pro_likes(request, p_link):
+    if request.method == 'POST':
+        product = get_object_or_404(ProductReview, p_link=p_link)
+        if product:
+            product.p_likes += 1
+            product.save()
+    return HttpResponseRedirect(reverse('beauty:pro-detail', args=[p_link]))

@@ -1,6 +1,6 @@
 {% extends 'my.html' %}
 {% block title %} Preview Page {% endblock %}
-
+{% load static %}
 {% block content %}
     <div class="container container-fluid bg-white px-2 py-5 break-text my-5">
         <div class="row mx-auto">
@@ -15,4 +15,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'beauty/js/config.js' %}"></script>
 {% endblock %}

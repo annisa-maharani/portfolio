@@ -1,10 +1,9 @@
 <!doctype html>
 <html lang="en-US">
-
 {% load static %}
 {% load i18n %}
 {% load l10n %}
-
+{% load tz %}
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -17,6 +16,16 @@
     <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
 
     <title>{% block title %}{% endblock %} - Beauty Care</title>
+
+    <meta name="robots" content="index,follow" />
+    <meta name="author" content="focus digital design" />
+    <meta name="distribution" content="global" />
+    <meta name="revisit-after" content="1 days" />
+    <meta name="googlebot" content="index,follow" />
+    <meta name="msnbot" content="index,follow" />
+    <meta name="yahoobot" content="index,follow" />
+    <meta name="spiders" content="all" />
+    <meta name="webcrawlers" content="all" />
     {% block style %}
     {% endblock %}
 </head>

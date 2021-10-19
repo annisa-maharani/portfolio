@@ -3,9 +3,19 @@
 
 {% block title %}
 {% if pro_post %}
-    {{ post.title | safe }}
+    {{ post.title }}
 {% else %}
-    {{ post.p_title | safe }}
+    {{ post.p_title }}
+{% endif %}
+{% endblock %}
+
+{% block style %}
+{% if pro_post %}
+    <meta name="keyword" content="{{ post.keyword }}">
+    <meta name="description" content="{{ post.desc }}">
+{% else %}
+    <meta name="keyword" content="{{ post.p_keyword }}">
+    <meta name="description" content="{{ post.p_desc }}">
 {% endif %}
 {% endblock %}
 
@@ -35,8 +45,11 @@
 <div class="bg-pink-2">
     <div class="container d-flex flex-column align-items-center">
         <img src="{% static 'beauty/img/0002.png' %}" alt="Notepad" class="img-fluid">
-
-        <p class="text-white">Posted on {{ post.date_create }}</p>
+        {% if pro_post %}
+        <p class="text-white">Posted on {{ post.date_create | date:"d M Y" }}</p>
+        {% else %}
+        <p class="text-white">Posted on {{ post.p_date_create | date:"d M Y" }}</p>
+        {% endif %}
     </div>
 </div>
 
@@ -67,17 +80,30 @@
         <div id="comments1">
             <div class="d-flex justify-content-end position-static sticky-top">
                 <a href="#collapseExample" data-toggle="collapse" class="btn btn-primary mx-1">Berikan Komentar</a>
-                <form action="" method="post">
+                {% if pro_post %}
+                <form action="{% url 'beauty:like' post.link %}" method="post">
+                {% else %}
+                <form action="{% url 'beauty:pro-like' post.p_link %}" method="post">
+                {% endif %}
                     {% csrf_token %}
                     <button class="btn btn-pink mx-1">
-                        <i class="bi bi-heart-fill"></i> {{ post.likes }}
+                        <i class="bi bi-heart-fill"></i>
+                        {% if pro_post %}
+                        {{ post.likes }}
+                        {% else %}
+                        {{ post.p_likes }}
+                        {% endif %}
                     </button>
                 </form>
 
             </div>
             <div class="collapse" id="collapseExample">
                 <div class="card bg-transparent card-body border-0">
-                    <form action="" method="post" enctype="multipart/form-data">
+                    {% if pro_post %}
+                    <form action="{% url 'beauty:add-comment' post.link %}" method="post" enctype="multipart/form-data">
+                    {% else %}
+                    <form action="{% url 'beauty:pro-comment' post.p_link %}" method="post" enctype="multipart/form-data">
+                    {% endif %}
                         {% load crispy_forms_tags %}
                         {% csrf_token %}
                         {{ form.media }}

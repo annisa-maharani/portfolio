@@ -40,15 +40,21 @@
                         </h2>
                         <div class="text-truncate">{{ post.content | safe}}</div>
                     </a>
-                    <small class="post-meta text-muted">Created by Annisa on </small>
+                    <small class="post-meta text-muted">
+                        Created by Annisa on
+                        {% if desk %}
+                        {{ post.date_create | date:"d M Y" }}
+                        {% else %}
+                        {{ post.p_date_create | date:"d M Y" }}
+                        {% endif %}
+                    </small>
                 </div>
                 <hr>
                 {% endfor %}
                 {% else %}
                 <div class="row mx-auto">
                     <div class="col-lg-10 col-10 mx-auto  mt-4">
-                        <h1 class="text-dark text-center font-times-new-roman ">maaf halaman yang kamu cari tidak
-                            tersedia</h1>
+                        <h1 class="text-dark text-center font-times-new-roman ">maaf halaman yang kamu cari tidak tersedia</h1>
                     </div>
                 </div>
                 {% endif %}

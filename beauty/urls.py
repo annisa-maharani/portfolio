@@ -18,6 +18,8 @@ urlpatterns += [
 
 """ URL for Page detail """
 urlpatterns += [
+    path('product/<p_link>/comment', CreateProductComment.as_view(), name='pro-comment'),
+    path('product/<p_link>/like', pro_likes, name='pro-like'),
     path('product/<p_link>', ProductDetail.as_view(), name='pro-detail'),
     path('<link>', PageDetail.as_view(), name='detail'),
 ]

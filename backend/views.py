@@ -4,6 +4,7 @@ from .forms import *
 from .utils import staff_required, slug_generator
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.db.models import Q as __
 
 
 link = 'link'
@@ -14,8 +15,20 @@ class AdminHome(ListView):
     template_name = "be/home.html"
     model = Post
     context_object_name = 'post'
-    ordering = ['-id']
+    ordering = '-id'
     paginate_by = 10
+
+    def get_queryset(self):
+        q = self.request.GET.get('q')
+        post = Post.objects.all()
+        if q is not None:
+            post = Post.objects.filter(
+                __(title__icontains=q) | __(content__icontains=q) |
+                __(keyword__icontains=q) | __(desc__icontains=q)
+            ).order_by(self.ordering)
+            return post
+        else:
+            return post.order_by(self.ordering)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -222,6 +235,19 @@ class ProductsList(ListView):
     template_name = 'be/products.html'
     ordering = '-id'
     context_object_name = 'products'
+    paginate_by = 10
+
+    def get_queryset(self):
+        q = self.request.GET.get('q')
+        pro = ProductReview.objects.all()
+        if q is not None:
+            pro = pro.filter(
+                __(p_title__icontains=q) | __(p_content__icontains=q) |
+                __(p_keyword__icontains=q) | __(p_desc__icontains=q)
+            ).order_by(self.ordering)
+        else:
+            pro = pro.order_by(self.ordering)
+        return pro
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
