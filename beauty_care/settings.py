@@ -9,10 +9,26 @@ CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+""" set debug to false in .env file """
 DEBUG = bool(int(config('DEBUG')))
 
 ALLOWED_HOSTS = ['*']
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+""" uncomment this section when you want to make it online """
+# CORS_REPLACE_HTTPS_REFERER = False
+# HOST_SCHEME = "http://"
+# SECURE_PROXY_SSL_HEADER = None
+# SECURE_SSL_REDIRECT = False
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_HSTS_SECONDS = None
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+# SECURE_FRAME_DENY = False
+# SECURE_CONTENT_TYPE_NOSNIFF = False
+# SECURE_BROWSER_XSS_FILTER = False
+# SESSION_COOKIE_HTTPONLY = False
+
 
 # Application definition
 

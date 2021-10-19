@@ -1,6 +1,8 @@
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.urls import reverse
+from django.conf import settings
+import os
 
 
 class MediaIcon(models.Model):
@@ -53,8 +55,8 @@ class MediaManager(models.Model):
     def __str__(self):
         return str(self.file)
 
-    def delete(self, using=None, keep_parents=False, *args, **kwargs):
-        self.delete()
+    def delete(self, using=None, *args, **kwargs):
+        os.remove(os.path.join(settings.MEDIA_ROOT, self.file.name))
         super().delete(*args, **kwargs)
 
 

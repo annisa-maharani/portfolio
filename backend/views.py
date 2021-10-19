@@ -206,7 +206,8 @@ def MediaUploadTest(request):
 def delete_all_media(request):
     if request.method == 'POST':
         media = MediaManager.objects.all()
-        media.delete()
+        for file in media:
+            file.delete()
     return redirect("my:media-manager")
 
 
