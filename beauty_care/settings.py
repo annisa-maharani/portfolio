@@ -55,7 +55,7 @@ AUTHENTICATION_BACKENDS = [
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
-SITE_ID = 1
+SITE_ID = int(config('SITE_ID'))
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -85,7 +85,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'beauty_care.wsgi.application'
+WSGI_APPLICATION = config('WSGI_APPLICATION')
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -120,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Jakarta'
+TIME_ZONE = config('TIME_ZONE')
 
 USE_I18N = True
 
