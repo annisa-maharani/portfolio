@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'beauty',
     'backend',
     'api',
+    'core',
+
     'ckeditor',
     'crispy_forms',
     'robots',
