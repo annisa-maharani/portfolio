@@ -3,6 +3,7 @@ from ckeditor.fields import RichTextField
 from django.urls import reverse
 from django.conf import settings
 import os
+from os import remove, path
 
 
 class MediaIcon(models.Model):
@@ -62,7 +63,9 @@ class MediaManager(models.Model):
 
 class ProductReview(models.Model):
     p_title = models.CharField(max_length=255, verbose_name='Nama Produk')
-    p_img = models.CharField(verbose_name='Link Gambar Produk', default='', max_length=255)
+    p_img = models.FileField(upload_to='product/img/', verbose_name='Link Gambar Produk', default='', max_length=255)
+    price = models.FloatField(verbose_name='Harga asli produk : ')
+    discount = models.FloatField(verbose_name='Harga yang akan di jual <small> *optional </small>: ', null=True, blank=True)
     p_link = models.SlugField(max_length=255, unique=True)
     p_content = RichTextField(verbose_name='Content')
     p_desc = models.TextField(verbose_name='Simple Description')
@@ -70,6 +73,7 @@ class ProductReview(models.Model):
     p_date_create = models.DateField(auto_now=True)
     p_date_update = models.DateField(auto_now_add=True)
     p_likes = models.IntegerField(default=0, verbose_name='likes')
+    in_stock = models.BooleanField(default=True)
 
     def contents(self):
         return self.p_content[:50]
@@ -79,3 +83,8 @@ class ProductReview(models.Model):
 
     def get_absolute_url(self):
         return reverse('beauty:pro-detail', args=[self.p_link])
+
+    def delete(self, using=None, *args, **kwargs):
+        remove(path.join(settings.MEDIA_ROOT, self.image.name))
+        super().delete(*args, **kwargs)
+

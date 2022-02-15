@@ -1,31 +1,11 @@
 from django.db import models
-from ckeditor.fields import RichTextField
-from os import remove, path
-from django.conf import settings
 from django.contrib.auth.models import User
-
-
-class Item(models.Model):
-    name = models.CharField(max_length=255)
-    item_link = models.SlugField(max_length=255)
-    description = RichTextField(config_name='default')
-    price = models.FloatField(verbose_name='Harga Asli Prodil yang akan di tampilkan')
-    discount = models.FloatField(verbose_name='Harga Diskon yang akan di tampilkan *optional', null=True, blank=True)
-    image = models.ImageField(upload_to='product/img/', verbose_name='Foto produk : ')
-    in_stock = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.name
-
-    def delete(self, using=None, *args, **kwargs):
-        remove(path.join(settings.MEDIA_ROOT, self.image.name))
-        super().delete(*args, **kwargs)
 
 
 class OrderItem(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    item = models.ForeignKey('backend.ProductReview', on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
     def __str__(self):
