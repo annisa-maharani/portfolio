@@ -10,7 +10,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 """ set debug to false in .env file """
-DEBUG = bool(int(config('DEBUG')))
+# DEBUG = bool(int(config('DEBUG')))
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 X_FRAME_OPTIONS = 'SAMEORIGIN'

@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.db.models import Q as __
 
-
 link = 'link'
 p_link = 'p_link'
 
@@ -69,10 +68,11 @@ class CreatePost(CreateView):
                 _link = _link.replace(i, 'n')
             _link = _link.replace(i, '')
 
-        if _link[-1] == '-':
-            _link = _link[:-1]
+        while True:
             if _link[-1] == '-':
                 _link = _link[:-1]
+            else:
+                break
 
         form.instance.link = _link.lower()
         return super().form_valid(form)
