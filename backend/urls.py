@@ -1,5 +1,5 @@
 from .views import *
-from django.urls import path
+from django.urls import path, include
 
 app_name = 'my'
 
@@ -22,9 +22,14 @@ urlpatterns += [
 
 """ products url """
 urlpatterns += [
-    path('products', ProductsList.as_view(), name='products'),
+    # path('products', ProductsList.as_view(), name='products'),
     path('products/create', CreateProducts.as_view(), name='create-product'),
     path('products/update/<p_link>', UpdateProductPost.as_view(), name='update-product'),
     path('products/delete/<p_link>', DeleteProductPost.as_view(), name='pr-delete'),
     path('products/preview/<p_link>', ReviewProductsPost.as_view(), name='pr-review'),
 ]
+
+# TODO : next urlpatterns from products
+# urlpatterns += [
+#     path('products/', include('core.urls', namespace='core'))
+# ]

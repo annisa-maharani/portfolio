@@ -231,30 +231,6 @@ def profile_edit(request):
 """ Products """
 
 
-class ProductsList(ListView):
-    model = ProductReview
-    template_name = 'be/products.html'
-    ordering = '-id'
-    context_object_name = 'products'
-    paginate_by = 10
-
-    def get_queryset(self):
-        q = self.request.GET.get('q')
-        pro = ProductReview.objects.all()
-        if q is not None:
-            pro = pro.filter(
-                __(p_title__icontains=q) | __(p_content__icontains=q) |
-                __(p_keyword__icontains=q) | __(p_desc__icontains=q)
-            ).order_by(self.ordering)
-        else:
-            pro = pro.order_by(self.ordering)
-        return pro
-
-    @method_decorator(login_required(login_url='/accounts/login/'))
-    def dispatch(self, request, *args, **kwargs):
-        return super(ProductsList, self).dispatch(request, *args, **kwargs)
-
-
 class CreateProducts(CreateView):
     model = ProductReview
     form_class = CreateProductForm
