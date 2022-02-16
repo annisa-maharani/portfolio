@@ -5,5 +5,5 @@ app_name = 'core'
 
 
 urlpatterns = [
-    path('', ProductList.as_view(), name='home'),
+    path('', ProductList.as_view(), name='products'),
 ]

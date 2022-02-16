@@ -4,6 +4,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q as __
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.urls import reverse
+from django.http import HttpResponseRedirect
 
 Product = 'backend.ProductReview'
 
@@ -27,6 +29,7 @@ class ProductList(ListView):
             pro = pro.order_by(self.ordering)
         return pro
 
+    @method_decorator(login_required(login_url='accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(ProductList, self).dispatch(request, *args, **kwargs)
 
@@ -37,7 +40,7 @@ class CreateProductView(CreateView, LoginRequiredMixin):
     template_name = None
 
     def get_success_url(self):
-        return
+        return reverse('core:products')
 
     def form_valid(self, form):
         return super(CreateProductView, self).form_valid(form)
