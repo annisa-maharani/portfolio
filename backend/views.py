@@ -273,10 +273,11 @@ class CreateProducts(CreateView):
                 _link = _link.replace(i, 'n')
             _link = _link.replace(i, '')
 
-        if _link[-1] == '-':
-            _link = _link[:-1]
+        while True:
             if _link[-1] == '-':
                 _link = _link[:-1]
+            else:
+                break
 
         form.instance.p_link = _link.lower()
         return super(CreateProducts, self).form_valid(form)
@@ -299,7 +300,6 @@ class CreateProducts(CreateView):
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
-        print(self.request.GET.get('b'))
         return super(CreateProducts, self).dispatch(request, *args, **kwargs)
 
 

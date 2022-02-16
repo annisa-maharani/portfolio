@@ -84,6 +84,9 @@ class ProductReview(models.Model):
     def get_absolute_url(self):
         return reverse('beauty:pro-detail', args=[self.p_link])
 
+    def filename(self):
+        return path.basename(self.p_img.name)
+
     def delete(self, using=None, *args, **kwargs):
         remove(path.join(settings.MEDIA_ROOT, self.image.name))
         super().delete(*args, **kwargs)

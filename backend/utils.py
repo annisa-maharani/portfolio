@@ -14,6 +14,6 @@ def staff_required(view_func=None, redirect_=REDIRECT_FIELD_NAME, login_='admin:
 
 
 def slug_generator(link):
-    link: string = link
+    link: str = link
     link.replace(" ", "-")
     return link
