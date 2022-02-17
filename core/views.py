@@ -40,10 +40,10 @@ class ProductList(ListView):
 class CreateProductView(CreateView, LoginRequiredMixin):
     model = Product
     form_class = ProductForm
-    template_name = None
+    template_name = 'be/create.html'
 
     def get_success_url(self):
-        return reverse('core:products')
+        return reverse('my:core:products')
 
     def form_valid(self, form):
         link = form.cleaned_data['p_title']
@@ -61,15 +61,15 @@ class CreateProductView(CreateView, LoginRequiredMixin):
 
 
 class UpdateProductView(UpdateView):
-    form_class = None
+    form_class = ProductForm
     model = Product
-    template_name = None
+    template_name = 'be/create.html'
     query_pk_and_slug = True
     slug_field = p_link
     slug_url_kwarg = p_link
 
     def get_success_url(self):
-        return
+        return reverse('my:core:update-product', kwargs={'p_link': self.object.p_link})
 
     def form_valid(self, form):
         link = form.cleaned_data['p_title']
@@ -92,13 +92,14 @@ class UpdateProductView(UpdateView):
 
 class DeleteProductView(DeleteView, LoginRequiredMixin):
     model = Product
-    template_name = None
+    template_name = 'be/delete.html'
     query_pk_and_slug = True
     slug_field = p_link
     slug_url_kwarg = p_link
+    context_object_name = 'post'
 
     def get_success_url(self):
-        return reverse('core:products')
+        return reverse('my:core:products')
 
     def get_context_data(self, **kwargs):
         context = super(DeleteProductView, self).get_context_data(**kwargs)

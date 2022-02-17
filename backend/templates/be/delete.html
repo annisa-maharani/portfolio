@@ -17,7 +17,7 @@
             {% if post.link %}
                 <a href="{% url 'my:home' %}" class="btn btn-info"> Back </a>
             {% else %}
-                <a href="{% url 'my:products' %}" class="btn btn-info"> Back </a>
+                <a href="{% url 'my:core:products' %}" class="btn btn-info"> Back </a>
             {% endif %}
 
         </div>
@@ -27,7 +27,7 @@
                 {% csrf_token %}
                 {{ form | crispy }}
                 <h1 class="text-danger">Post To Delete : </h1>
-                <h5>Name : {{ post }}</h5>
+                <h5>Name : {{ post | safe }}</h5>
                 <h5>Link :
                     {% if post.link %}
                         {{ post.link }}
