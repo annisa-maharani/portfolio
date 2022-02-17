@@ -5,6 +5,11 @@ from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 from django.conf import settings
 
+mark = [
+    ('R', "Rumah"),
+    ('K', "Kantor")
+]
+
 
 class Subscriber(models.Model):
     email = models.EmailField(max_length=255)
@@ -44,3 +49,18 @@ class UserProfile(models.Model):
     def delete(self, using=None, *args, **kwargs):
         remove(path.join(settings.MEDIA_ROOOT, self.image.name))
         super(UserProfile, self).delete(*args, **kwargs)
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    address_link = models.SlugField(max_length=255)
+    post_code = models.CharField(max_length=255)
+    main_address = models.TextField()
+    detailed_address = models.CharField(max_length=255)
+    default = models.BooleanField(default=False)
+    mark_as = models.CharField(default='R', choices=mark, max_length=10)
+
+    def __str__(self):
+        if self.default:
+            return f"{self.user}'s main address"
+        return f"{self.user}'s address"
