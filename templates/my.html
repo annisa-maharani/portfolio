@@ -42,8 +42,8 @@
                     Products
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'my:products' %}">Products List</a>
-                    <form action="{% url 'my:create-product' %}" method="get" enctype="multipart/form-data">
+                    <a class="dropdown-item" href="{% url 'my:core:products' %}">Products List</a>
+                    <form action="{% url 'my:core:create-product' %}" method="get" enctype="multipart/form-data">
                         <input type="text" name="b" id="b" value="2" hidden>
                         <button class="dropdown-item">Create Product Post</button>
                     </form>

@@ -25,4 +25,12 @@ def link_generator(link: str):
         else:
             break
 
-    return link
+    return link.lower()
+
+
+def b_url(back):
+    if back is not None:
+        """ 1 is for post and 3 is for products """
+        if back == '1':
+            return True
+        return False

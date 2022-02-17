@@ -1,6 +1,7 @@
 from django import forms
+from django.apps import apps
 
-Product = 'backend.ProductReview'
+Product = apps.get_model('backend', 'ProductReview')
 
 
 class ProductForm(forms.ModelForm):

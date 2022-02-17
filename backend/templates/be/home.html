@@ -76,13 +76,13 @@
                         {% endif %}
 
                         {% for n in page_obj.paginator.page_range %}
-                        {% if page_obj.number == n %}
-                        <li class="page-item active">
-                            <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
-                        </li>
-                        {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
-                        <li class="page-item"><a class="page-link" href="?page={{ n }}#post">{{ n }}</a></li>
-                        {% endif %}
+                            {% if page_obj.number == n %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ n }}<span class="sr-only">(current)</span></span>
+                            </li>
+                            {% elif n > page_obj.number|add:'-3' and n < page_obj.number|add:'3' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ n }}#post">{{ n }}</a></li>
+                            {% endif %}
                         {% endfor %}
 
                         {% if page_obj.has_next %}

@@ -13,7 +13,7 @@
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-end">
-                <form action="{% url 'my:create-product' %}" method="get" enctype="multipart/form-data">
+                <form action="{% url 'my:core:create-product' %}" method="get" enctype="multipart/form-data">
                     <input type="text" name="b" id="b" value="2" hidden>
                     <button class="btn btn-primary" > Create Products Post</button>
                 </form>
@@ -43,16 +43,16 @@
                     <td>{{ product.p_title }}</td>
                     <td>{{ product.p_date_create }}</td>
                     <td>
-                        <form action="{% url 'my:update-product' product.p_link %}">
+                        <form action="{% url 'my:core:update-product' product.p_link %}">
                             <button class="btn btn-success"> Update</button>
                         </form>
                     </td>
                     <td>
-                        <form action="{% url 'my:pr-delete' product.p_link %}">
+                        <form action="{% url 'my:core:pr-delete' product.p_link %}">
                             <button class="btn btn-danger">Delete</button>
                         </form>
                     </td>
-                    <td><a target="_blank" href="{% url 'my:pr-review' product.p_link %}">{{ product.p_link }}</a></td>
+                    <td><a target="_blank" href="{% url 'my:core:pr-preview' product.p_link %}">{{ product.p_link }}</a></td>
                 </tr>
                 {% endfor %}
                 </tbody>
