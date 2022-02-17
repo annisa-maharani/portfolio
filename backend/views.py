@@ -148,6 +148,16 @@ class MediaManagerView(ListView):
         return super(MediaManagerView, self).dispatch(request, *args, **kwargs)
 
 
+class MediaDelete(DeleteView):
+    model = MediaManager
+    template_name = 'be/delete.html'
+    query_pk_and_slug = True
+    pk_url_kwarg = 'pk'
+
+    def get_success_url(self):
+        return reverse('my:media-manager')
+
+
 class MediaUpload(CreateView):
     model = MediaManager
     template_name = 'be/media_upload.html'

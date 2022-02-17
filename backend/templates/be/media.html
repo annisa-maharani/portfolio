@@ -68,8 +68,10 @@
                         <img src="{{ file.file.url }}" alt="Media Image" class="img-fluid embed-responsive-item">
                     </div>
                     <div class="card-body">
-                        <input type="text" name="img_link" id="img_link_{{file.pk}}" value="{{ file.file.url }}" onclick="copy({{file.pk}})" class="form-control" >
+                        <input type="text" name="img_link" id="img_link_{{file.pk}}" value="{{ file.file.url }}" onclick="copy({{ file.pk }})" class="form-control" >
+                        <div class="row mx-auto my-3"><a href="{% url 'my:media-delete' file.pk %}" class="col btn btn-danger">Delete <i class="bi bi-trash"></i> </a></div>
                     </div>
+
                 </div>
             </div>
             {% endfor %}

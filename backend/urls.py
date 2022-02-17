@@ -17,6 +17,7 @@ urlpatterns += [
     path('media', MediaManagerView.as_view(), name='media-manager'),
     path('media/upload', MediaUpload.as_view(), name='media-upload'),
     path('media/upload/test', MediaUploadTest, name='media-upload-test'),
+    path('media/delete/<pk>', MediaDelete.as_view(), name='media-delete'),
     path('media/delete-all', delete_all_media, name='delete-all'),
 ]
 
