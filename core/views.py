@@ -4,7 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q as __
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.apps import apps
 from django.urls import reverse
 from .forms import *
 from .utils import link_generator, b_url
