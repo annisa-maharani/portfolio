@@ -21,9 +21,10 @@ class OrderSummary(ListView):
     context_object_name = 'items'
 
     def get_queryset(self):
-        order = Order.objects.filter(user=self.request.user, ordered=False)
+        order = Order.objects.all()
+        order = order.filter(user=self.request.user, ordered=False)
         if order.exists():
-            return order[0]
+            return order.first()
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -85,3 +86,23 @@ def remove_from_cart(request, p_link):
         return HttpResponseRedirect(redirect_to=url)
     # TODO : redirect to item
     return HttpResponseRedirect(reverse('beauty:pro-detail', kwargs={'p_link': p_link}))
+
+
+def reduce_item(request, p_link):
+    item = get_object_or_404(Product, p_link=p_link)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.item.filter(item__p_link=item.p_link).exists():
+            order_item = OrderItem.objects.filter(item=item, user=request.user, ordered=False)
+            if order_item.quantity == 1:
+                return redirect(f"/remove-from-cart/{p_link}?url=/order/")
+            order_item.quantity -= 1
+            order_item.save()
+            messages.info(request, "This item was reduced from your cart")
+        else:
+            messages.info(request, "This item was not in your cart")
+    else:
+        messages.info(request, "You dont have an active order")
+
+    return redirect('/order/')

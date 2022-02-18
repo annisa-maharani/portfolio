@@ -83,7 +83,7 @@
                 {% if pro_post %}
                 <form action="{% url 'beauty:like' post.link %}" method="post">
                 {% else %}
-                <a href="" class="btn btn-primary"> Add to Cart </a>
+                <a href="{% url 'com:add-to-cart' post.p_link %}?url={% url 'beauty:pro-detail' post.p_link %}" class="btn btn-primary"> Add to Cart </a>
                 <form action="{% url 'beauty:pro-like' post.p_link %}" method="post">
                 {% endif %}
                     {% csrf_token %}

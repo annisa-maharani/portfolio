@@ -76,6 +76,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 SITE_ID = int(config('SITE_ID'))
+USE_THOUSAND_SEPARATOR = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

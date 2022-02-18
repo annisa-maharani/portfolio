@@ -7,32 +7,31 @@
     <div class="table-responsive">
         <table class="table bg-white">
             <thead class="table-info">
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
-            </tr>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price \ Item</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Actions</th>
+                </tr>
             </thead>
             <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-            </tr>
-            <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-            </tr>
-            <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-            </tr>
+            {% for item in items.item.all %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ item }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>Rp. {{ item.item.price }}</td>
+                    <td>
+                        {% if item.item.discount %}
+                        Rp. {{  item.get_total_item_discount_price }} <small class="text-small text-secondary">Hemat Rp. {{ item.get_amount_saved }}</small>
+                        {% else %}
+                        Rp. {{ item.get_total_item_price }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
