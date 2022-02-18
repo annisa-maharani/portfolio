@@ -125,6 +125,11 @@
                 <a href="{% url 'com:order' %}" class="nav-link"><i class="bi bi-cart2"></i> 2 </a>
             </li>
         </ul>
+        {% if user.is_authenticated %}
+        <a href="/accounts/logout/" class="text-danger mr-0"> Logout </a>
+        {% else %}
+        <a href="/accounts/login/" class="text-success mr-0"> Login </a>
+        {% endif %}
     </div>
 
 </nav>
