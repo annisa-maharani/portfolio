@@ -33,6 +33,7 @@ urlpatterns = [
     path('api/', include('api.urls', namespace='api')),
     path('download/<path>', serve, settings.MEDIA_ROOT),
     path('accounts/', include('allauth.urls')),
+    path('order/', include('commerce.urls', namespace='com')),
     path('static/<path>', serve, settings.STATIC_ROOT),
     path('media/<path>', serve, settings.MEDIA_ROOT),
     path('wpcp-admin/', include('backend.urls', namespace="my")),

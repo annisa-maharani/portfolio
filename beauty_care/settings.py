@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'backend',
     'api',
     'core',
+    'commerce',
 
     'ckeditor',
     'crispy_forms',
@@ -139,11 +140,11 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
+USE_L10N = True
+
 TIME_ZONE = config('TIME_ZONE')
 
 USE_I18N = True
-
-USE_L10N = True
 
 USE_TZ = True
 
