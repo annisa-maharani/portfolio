@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse
 from .forms import *
-from .utils import link_generator, b_url
+from .utils import link_generator, b_url, staff_required
 from django.http import HttpResponseRedirect
 
 p_link = 'p_link'
@@ -32,6 +32,7 @@ class ProductList(ListView):
         return pro
 
     @method_decorator(login_required(login_url='accounts/login/'))
+    @method_decorator(staff_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ProductList, self).dispatch(request, *args, **kwargs)
 
@@ -57,6 +58,10 @@ class CreateProductView(CreateView, LoginRequiredMixin):
 
         context['back'] = b_url(back)
         return context
+
+    @method_decorator(staff_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(CreateProductView, self).dispatch(request, *args, **kwargs)
 
 
 class UpdateProductView(UpdateView):
@@ -85,6 +90,7 @@ class UpdateProductView(UpdateView):
         return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(staff_required)
     def dispatch(self, request, *args, **kwargs):
         return super(UpdateProductView, self).dispatch(request, *args, **kwargs)
 
@@ -107,6 +113,10 @@ class DeleteProductView(DeleteView, LoginRequiredMixin):
         context['back'] = b_url(back)
         return context
 
+    @method_decorator(staff_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(DeleteProductView, self).dispatch(request, *args, **kwargs)
+
 
 class ReviewProductView(DetailView):
     template_name = 'be/preview.html'
@@ -124,5 +134,6 @@ class ReviewProductView(DetailView):
         return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(staff_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ReviewProductView, self).dispatch(request, *args, **kwargs)

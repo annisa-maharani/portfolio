@@ -30,6 +30,7 @@ class AdminHome(ListView):
             return post.order_by(self.ordering)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(staff_required)
     def dispatch(self, request, *args, **kwargs):
         return super(AdminHome, self).dispatch(request, *args, **kwargs)
 
@@ -157,6 +158,11 @@ class MediaDelete(DeleteView):
     def get_success_url(self):
         return reverse('my:media-manager')
 
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(staff_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super(MediaDelete, self).dispatch(request, *args, **kwargs)
+
 
 class MediaUpload(CreateView):
     model = MediaManager
@@ -176,6 +182,7 @@ class MediaUpload(CreateView):
         return super().form_valid(form)
 
     @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(staff_required)
     def dispatch(self, request, *args, **kwargs):
         if not self.request.FILES.getlist('file'):
             return redirect('my:media-manager')
@@ -198,6 +205,7 @@ class PreviewPage(DetailView):
         return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
+    @method_decorator(staff_required)
     def dispatch(self, request, *args, **kwargs):
         return super(PreviewPage, self).dispatch(request, *args, **kwargs)
 
@@ -213,6 +221,7 @@ def MediaUploadTest(request):
 
 
 @login_required(login_url='/accounts/login/')
+@staff_required
 def delete_all_media(request):
     if request.method == 'POST':
         media = MediaManager.objects.all()
@@ -224,6 +233,8 @@ def delete_all_media(request):
 """ Profile Editing """
 
 
+@login_required(login_url='/accounts/login/')
+@staff_required
 def profile_edit(request):
     profile = get_object_or_404(Profile, pk=1)
     form = UpdateProfileForm(request.POST or None, request.FILES or None, instance=profile)

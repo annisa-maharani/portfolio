@@ -1,4 +1,17 @@
 import string, random
+from django.contrib.auth import REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import user_passes_test
+
+
+def staff_required(view_func=None, redir=REDIRECT_FIELD_NAME, login='/accounts/logout/'):
+    actual = user_passes_test(
+        lambda u: u.is_active and u.is_staff and u.is_superuser,
+        login_url=login,
+        redirect_field_name=redir
+    )
+    if view_func:
+        return actual(view_func)
+    return actual
 
 
 def code_generator(length: int):
