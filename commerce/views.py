@@ -9,6 +9,11 @@ from django.contrib import messages
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from .forms import CheckoutForm
+from django.conf import settings
+import stripe
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 Order = apps.get_model('core', 'Order')
 OrderItem = apps.get_model('core', 'OrderItem')
@@ -29,6 +34,66 @@ class OrderSummary(ListView):
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(OrderSummary, self).dispatch(request, *args, **kwargs)
+
+
+class CheckoutView(View, LoginRequiredMixin):
+    def get(self, *args, **kwargs):
+        try:
+            form = CheckoutForm()
+            address = None
+
+            context = {
+                'form': form,
+                'address': address
+            }
+            return render(self.request, 'com/checkout.html', context)
+        except ObjectDoesNotExist:
+            messages.info(self.request, "You dont have an active order! ")
+            return redirect('com:order')
+
+    def post(self, *args, **kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            if form.is_valid():
+                payment = form.cleaned_data['payment_option']
+
+                address = self.request.POST.get('address')
+                order.address = address
+                order.save()
+
+                if payment == "S":
+                    # TODO : reverse to stripe payment
+                    return HttpResponseRedirect
+                elif payment == 'P':
+                    # TODO  : reverse to paypal payment
+                    return HttpResponseRedirect
+                else:
+                    messages.error(self.request, "Invalid Payment Options ! ")
+                    # TODO : redirect to this view (get)
+                    return redirect
+        except ObjectDoesNotExist:
+            messages.warning(self.request, 'You dont have an active order!')
+            return redirect('/')
+
+        messages.warning(self.request, "Checkout Failed! ")
+        return redirect('com:order')
+
+
+class PaymentView(View):
+    def get(self, *args, **kwargs):
+        order = Order.objects.get(user=self.request.user, ordered=False)
+        context = {
+            'order': order,
+            'url': self.request.build_absolute_uri()
+        }
+        return render(self.request, None, context)
+
+    def post(self, *args, **kwargs):
+        host = self.request.get_host()
+        order = Order.objects.get(user=self.request.user, ordered=False)
+        amount = int(order.get_total())
+
 
 
 @login_required(login_url='/accounts/login/')

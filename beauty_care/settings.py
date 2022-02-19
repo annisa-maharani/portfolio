@@ -200,3 +200,9 @@ CKEDITOR_CONFIGS = {
         # 'toolbar': 'basic'
     },
 }
+
+
+# Stripe configuration
+STRIPE_SECRET_KEY = 'sk_test_51KPkPJBfPVLRRhOZTEeYNMUQjxjHJ8T24YFNPL5eP1cunKhdnTsGBoENxTzvxmRA2S1xR5BPHr8g01FHdNp7qHfP00KDMhDLzE'
+STRIPE_PUBLISH_KEY = ''
+
