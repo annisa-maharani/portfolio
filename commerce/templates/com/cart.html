@@ -3,42 +3,55 @@
 {% block title %} My Order {% endblock %}
 
 {% block content %}
-<div class="container my-5 ">
-    <div class="table-responsive">
-        <table class="table bg-white">
-            <thead class="table-info">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Price \ Item</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Remove</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for item in items.item.all %}
-                <tr>
-                    <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ item.item.p_title }}</td>
-                    <td>
-                        <a href="{{ item.item.get_item_add_to_cart }}?url=/order/" class="btn btn-outline-primary">+1</a>
-                        {{ item.quantity }}
-                        <a href="{{ item.item.get_reduce_item }}?url=/order/" class="btn btn-outline-danger">-1</a>
-                    </td>
-                    <td>Rp. {{ item.item.price }}</td>
-                    <td>
-                        {% if item.item.discount %}
-                        Rp. {{  item.get_total_item_discount_price }} <small class="text-small text-secondary">Hemat Rp. {{ item.get_amount_saved }}</small>
-                        {% else %}
-                        Rp. {{ item.get_total_item_price }}
-                        {% endif %}
-                    </td>
-                    <td><a href="{{ item.item.get_item_remove_from_cart }}?url=/order/" class="btn btn-danger"><i class="bi bi-trash"></i></a></td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+<div class="row mx-auto my-5">
+    <div class="col-10 col-lg-10 mx-auto">
+        <div class="table-responsive">
+            <table class="table bg-white">
+                <thead class="table-info">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price \ Item</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Remove</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in items.item.all %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ item.item.p_title }}</td>
+                        <td>
+                            <a href="{{ item.item.get_item_add_to_cart }}?url=/order/" class="btn btn-outline-primary">+1</a>
+                            {{ item.quantity }}
+                            <a href="{{ item.item.get_reduce_item }}?url=/order/" class="btn btn-outline-danger">-1</a>
+                        </td>
+                        <td>Rp. {{ item.item.price }}</td>
+                        <td>
+                            {% if item.item.discount %}
+                            Rp. {{ item.get_total_item_discount_price }} <small class="text-small text-secondary">Hemat Rp. {{ item.get_amount_saved }}</small>
+                            {% else %}
+                            Rp. {{ item.get_total_item_price }}
+                            {% endif %}
+                        </td>
+                        <td><a href="{{ item.item.get_item_remove_from_cart }}?url=/order/" class="btn btn-danger"><i class="bi bi-trash"></i></a></td>
+                    </tr>
+                {% endfor %}
+                {% if items.get_total %}
+                    <tr>
+                        <td colspan="4">Total Price :</td>
+                        <td>Rp. {{ items.get_total }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <a href="" class="btn btn-warning float-right"> Checkout </a>
+                        </td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 {% endblock %}
