@@ -13,15 +13,19 @@
                     <th scope="col">Quantity</th>
                     <th scope="col">Price \ Item</th>
                     <th scope="col">Total</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col">Remove</th>
                 </tr>
             </thead>
             <tbody>
             {% for item in items.item.all %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
-                    <td>{{ item }}</td>
-                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.item.p_title }}</td>
+                    <td>
+                        <a href="{{ item.item.get_item_add_to_cart }}?url=/order/" class="btn btn-outline-primary">+1</a>
+                        {{ item.quantity }}
+                        <a href="{{ item.item.get_reduce_item }}?url=/order/" class="btn btn-outline-danger">-1</a>
+                    </td>
                     <td>Rp. {{ item.item.price }}</td>
                     <td>
                         {% if item.item.discount %}
@@ -30,6 +34,7 @@
                         Rp. {{ item.get_total_item_price }}
                         {% endif %}
                     </td>
+                    <td><a href="{{ item.item.get_item_remove_from_cart }}?url=/order/" class="btn btn-danger"><i class="bi bi-trash"></i></a></td>
                 </tr>
             {% endfor %}
             </tbody>

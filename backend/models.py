@@ -87,6 +87,15 @@ class ProductReview(models.Model):
     def get_absolute_url(self):
         return reverse('beauty:pro-detail', args=[self.p_link])
 
+    def get_item_add_to_cart(self):
+        return reverse('com:add-to-cart', kwargs={'p_link': self.p_link})
+
+    def get_item_remove_from_cart(self):
+        return reverse('com:remove-from-cart', kwargs={'p_link': self.p_link})
+
+    def get_reduce_item(self):
+        return reverse('com:reduce-item', kwargs={'p_link': self.p_link})
+
     def filename(self):
         return path.basename(self.p_img.name)
 

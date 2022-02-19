@@ -72,7 +72,7 @@ def remove_from_cart(request, p_link):
     if order_qs.exists():
         order = order_qs.first()
         if order.item.filter(item__p_link=item.p_link).exists():
-            order_item = OrderItem.objects.filter(item=item, user=request.user, ordered=False)
+            order_item = OrderItem.objects.filter(item=item, user=request.user, ordered=False).first()
             order.item.remove(order_item)
             order_item.delete()
             messages.info(request, "The Item was removed from your cart")
@@ -94,7 +94,7 @@ def reduce_item(request, p_link):
     if order_qs.exists():
         order = order_qs[0]
         if order.item.filter(item__p_link=item.p_link).exists():
-            order_item = OrderItem.objects.filter(item=item, user=request.user, ordered=False)
+            order_item = OrderItem.objects.filter(item=item, user=request.user, ordered=False)[0]
             if order_item.quantity == 1:
                 return redirect(f"/remove-from-cart/{p_link}?url=/order/")
             order_item.quantity -= 1

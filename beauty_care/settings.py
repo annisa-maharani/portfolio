@@ -102,6 +102,10 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'cart_template_tags': 'commerce.templatetags.cart_template_tags',
+
+            }
         },
     },
 ]

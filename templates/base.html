@@ -2,6 +2,7 @@
 <html lang="en-US">
 {% load static %}
 {% load i18n %}
+{% load cart_template_tags %}
 {% load l10n %}
 {% load tz %}
 <head>
@@ -122,7 +123,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a href="{% url 'com:order' %}" class="nav-link"><i class="bi bi-cart2"></i> 2 </a>
+                <a href="{% url 'com:order' %}" class="nav-link"><i class="bi bi-cart2"></i> {{ request.user | cart_item_counter }} </a>
             </li>
         </ul>
         {% if user.is_authenticated %}
