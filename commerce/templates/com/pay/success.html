@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="jumbotron bg-white">
+        <h1 class="display-4">Payment Success</h1>
+        <p class="lead"> Paid at : {{ order.paid_at | date:'M, d, Y' }} </p>
+        <hr class="my-4">
+        <p>Item : </p>
+        <div class="table-responsive">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in order.item.all %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ item.item.p_title }}</td>
+                        <td>{{ item.quantity }} &times; {{ item.item.get_item_price }}</td>
+                        <td>{{ item.get_final_price }}</td>
+                </tr>
+                {% endfor %}
+                {% if order.get_total %}
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="1">Total :</td>
+                        <td>{{ order.get_total }}</td>
+                </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <a class="btn btn-primary btn-lg" href="/" role="button">Main Page</a>
+    </div>
+</div>
+{% endblock %}

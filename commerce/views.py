@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .forms import CheckoutForm
 from django.conf import settings
-import stripe
+import stripe, datetime
 from django.views.decorators.csrf import csrf_exempt
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
@@ -127,15 +127,22 @@ class PaymentView(View):
 
 
 class PaymentSuccess(View):
-    template_name = 'com/pa/success.html'
+    template_name = 'com/pay/success.html'
 
     def get(self, *args, **kwargs):
+        now = datetime.date.today()
         order = Order.objects.filter(user=self.request.user, ordered=False)
         if order.exists():
             order = order[0]
             order.ordered = True
+            order.paid_at = now
+            order.save()
 
-        return render(self.request, self.template_name)
+        order = Order.objects.get(user=self.request.user, ordered=True, paid_at=timezone.localtime(timezone.now()).date())
+        context = {
+            'order': order,
+        }
+        return render(self.request, self.template_name, context)
 
 
 class PaymentCancel(TemplateView, LoginRequiredMixin):

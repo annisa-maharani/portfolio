@@ -33,6 +33,7 @@ class Order(models.Model):
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
     address = models.ForeignKey('beauty.Address', on_delete=models.SET_NULL, null=True, blank=True)
+    paid_at = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         return self.user.username
