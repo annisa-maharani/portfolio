@@ -7,17 +7,19 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.utils import timezone
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .forms import CheckoutForm
 from django.conf import settings
 import stripe
+from django.views.decorators.csrf import csrf_exempt
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 Order = apps.get_model('core', 'Order')
 OrderItem = apps.get_model('core', 'OrderItem')
 Product = apps.get_model('backend', 'ProductReview')
+Address = apps.get_model('beauty', 'Address')
 
 
 class OrderSummary(ListView):
@@ -40,7 +42,7 @@ class CheckoutView(View, LoginRequiredMixin):
     def get(self, *args, **kwargs):
         try:
             form = CheckoutForm()
-            address = None
+            address = Address.objects.filter(user=self.request.user)
 
             context = {
                 'form': form,
@@ -59,19 +61,21 @@ class CheckoutView(View, LoginRequiredMixin):
                 payment = form.cleaned_data['payment_option']
 
                 address = self.request.POST.get('address')
-                order.address = address
+                address = Address.objects.get(address_link=address)
+
+                order.address__address_link = address
                 order.save()
 
                 if payment == "S":
                     # TODO : reverse to stripe payment
-                    return HttpResponseRedirect
+                    return HttpResponseRedirect(reverse('com:payment', kwargs={'method':'stripe'}))
                 elif payment == 'P':
                     # TODO  : reverse to paypal payment
-                    return HttpResponseRedirect
+                    return HttpResponseRedirect(reverse('com:payment', kwargs={'method': 'paypal'}))
                 else:
                     messages.error(self.request, "Invalid Payment Options ! ")
                     # TODO : redirect to this view (get)
-                    return redirect
+                    return redirect('com:checkout')
         except ObjectDoesNotExist:
             messages.warning(self.request, 'You dont have an active order!')
             return redirect('/')
@@ -85,15 +89,57 @@ class PaymentView(View):
         order = Order.objects.get(user=self.request.user, ordered=False)
         context = {
             'order': order,
-            'url': self.request.build_absolute_uri()
+            'uri': self.request.build_absolute_uri()
         }
-        return render(self.request, None, context)
+        return render(self.request, 'com/pay/payment.html', context)
 
     def post(self, *args, **kwargs):
-        host = self.request.get_host()
         order = Order.objects.get(user=self.request.user, ordered=False)
         amount = int(order.get_total())
 
+        host = self.request.get_host()
+
+        success_url = f"http://{host}{reverse('com:payment-success')}"
+        cancel_url = f"http://{host}{reverse('com:payment-cancel')}"
+
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[
+                {
+                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    'price_data': {
+                        'currency':'idr',
+                        'unit_amount': amount * 100,
+                        'product_data': {
+                            'name': f"Billing For ",
+                        }
+                    },
+                    'quantity': 1,
+                },
+            ],
+            mode='payment',
+            success_url=success_url,
+            cancel_url=cancel_url,
+        )
+        # if checkout_session.url == success_url:
+        if checkout_session.url == checkout_session.success_url:
+            print('hai')
+        return redirect(checkout_session.url, code=303)
+
+
+class PaymentSuccess(View):
+    template_name = 'com/pa/success.html'
+
+    def get(self, *args, **kwargs):
+        order = Order.objects.filter(user=self.request.user, ordered=False)
+        if order.exists():
+            order = order[0]
+            order.ordered = True
+
+        return render(self.request, self.template_name)
+
+
+class PaymentCancel(TemplateView, LoginRequiredMixin):
+    template_name = None
 
 
 @login_required(login_url='/accounts/login/')
@@ -153,6 +199,7 @@ def remove_from_cart(request, p_link):
     return HttpResponseRedirect(reverse('beauty:pro-detail', kwargs={'p_link': p_link}))
 
 
+@login_required(login_url='/accounts/login/')
 def reduce_item(request, p_link):
     item = get_object_or_404(Product, p_link=p_link)
     order_qs = Order.objects.filter(user=request.user, ordered=False)
@@ -171,3 +218,31 @@ def reduce_item(request, p_link):
         messages.info(request, "You dont have an active order")
 
     return redirect('/order/')
+
+
+@csrf_exempt
+def stripe_webhook(request):
+    event = None
+    payload = request.data
+    sig_header = request.headers['STRIPE_SIGNATURE']
+
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, settings.STRIPE_WEBHOOK_KEY
+        )
+    except ValueError as e:
+        # Invalid payload
+        raise e
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid signature
+        raise e
+
+    # Handle the event
+    if event['type'] == 'payment_intent.succeeded':
+        payment_intent = event['data']['object']
+    # ... handle other event types
+    else:
+        print('Unhandled event type {}'.format(event['type']))
+    # Passed signature verification
+    return HttpResponse(status=200)
+

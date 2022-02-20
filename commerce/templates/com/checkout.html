@@ -9,6 +9,17 @@
             <div class="card-body">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
+                    <div class="form-group">
+                        <label class="requiredField">Address*</label>
+                        <div>
+                            {% for add in address %}
+                            <div class="form-check">
+                                <input type="radio" name="address" id="address-{{ add.pk }}" class="form-check-input" value="{{ add.address_link }}">
+                                <label for="address-{{ add.pk }}" class="form-check-label">{{ add.detailed_address  }}</label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
                     {{ form | crispy }}
                     <div class="form-group">
                         <button class="btn btn-primary"> Create Payment</button>

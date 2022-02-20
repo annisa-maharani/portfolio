@@ -99,6 +99,11 @@ class ProductReview(models.Model):
     def filename(self):
         return path.basename(self.p_img.name)
 
+    def get_item_price(self):
+        if self.discount:
+            return self.discount
+        return self.price
+
     def delete(self, using=None, *args, **kwargs):
         remove(path.join(settings.MEDIA_ROOT, self.p_img.name))
         super().delete(*args, **kwargs)

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %} Payment {% endblock %}
+
+{% block content %}
+<div class="row mx-auto my-5">
+    <div class="col-10 col-lg-10 mx-auto">
+        <div class="table-responsive bg-white">
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">First</th>
+                        <th scope="col">Last</th>
+                        <th scope="col">Handle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for item in order.item.all %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ item.item.p_title }}</td>
+                        <td>{{ item.quantity }} &times; {{ item.item.get_item_price }}</td>
+                        <td>{{ item.get_final_price }}</td>
+                    </tr>
+                {% endfor %}
+                {% if order.get_total %}
+                    <tr>
+                        <td colspan="2"></td>
+                        <td colspan="1">Total : </td>
+                        <td>{{ order.get_total }}</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+    <div class="col-10 col-lg-10 mx-auto my-3">
+        <form method="post" class="bg-white" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <button class="btn col btn-primary">Pay</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
