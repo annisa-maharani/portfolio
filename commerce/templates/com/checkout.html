@@ -20,7 +20,7 @@
                             </div>
                             {% endfor %}
                             {% else %}
-                            <a href="{% url 'beauty:add-address' %}" class="btn btn-primary">Add Your Address </a>
+                            <a href="{% url 'beauty:add-address' %}?url={% url 'com:checkout' %}" class="btn btn-primary">Add Your Address </a>
                             {% endif %}
                         </div>
                     </div>

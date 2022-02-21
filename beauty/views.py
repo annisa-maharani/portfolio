@@ -8,6 +8,7 @@ from django.db.models import Q as __
 from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from .utils import link_generator
 
 links = 'link'
 p_links = 'p_link'
@@ -40,24 +41,24 @@ class AddAddressView(View):
         return render(self.request, self.template_name, context)
     
     def post(self, *args, **kwargs):
+        url = self.request.GET.get('url')
         form = self.form_class(self.request.POST or None)
         if form.is_valid():
-            form.instance.address_link = None
+            link = link_generator(12)
+            address = Address.objects.all()
+            add_link = [x.address_link for x in address]
+
+            while True:
+                if link in add_link:
+                    link = link_generator(12)
+                else:
+                    break
+
+            form.instance.address_link = link
+            form.instance.user = self.request.user
             form.save()
-        return
-    # def get_success_url(self):
-    #     url = self.request.GET.get('url')
-    #     return redirect(url) if url and url is not None else redirect('com:profile')
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super(AddAddressView, self).get_context_data(**kwargs)
-    #     form = AddAddressForm
-    #
-    #     context['form'] = form
-    #     return context
-    #
-    # def form_valid(self, form):
-    #     return super(AddAddressView, self).form_valid(form)
+
+        return redirect(url) if url and url is not None else redirect('beauty:profile')
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
