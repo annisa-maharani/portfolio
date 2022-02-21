@@ -12,12 +12,16 @@
                     <div class="form-group">
                         <label class="requiredField">Address*</label>
                         <div>
+                            {% if address %}
                             {% for add in address %}
                             <div class="form-check">
                                 <input type="radio" name="address" id="address-{{ add.pk }}" class="form-check-input" value="{{ add.address_link }}">
                                 <label for="address-{{ add.pk }}" class="form-check-label">{{ add.detailed_address  }}</label>
                             </div>
                             {% endfor %}
+                            {% else %}
+                            <a href="{% url 'beauty:add-address' %}" class="btn btn-primary">Add Your Address </a>
+                            {% endif %}
                         </div>
                     </div>
                     {{ form | crispy }}

@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.views.generic import *
 from backend.models import Profile, Post, ProductReview
 from .forms import *
@@ -6,6 +6,8 @@ from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.db.models import Q as __
 from django.http import HttpResponseRedirect
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 links = 'link'
 p_links = 'p_link'
@@ -24,6 +26,42 @@ class MainPage(TemplateView):
         context['profile'] = profile
         context['latest'] = latest
         return context
+
+
+class AddAddressView(View):
+    model = Address
+    template_name = 'beauty/forms.html'
+    form_class = AddAddressForm
+
+    def get(self, *args, **kwargs):
+        context = {
+            'form': self.form_class
+        }
+        return render(self.request, self.template_name, context)
+    
+    def post(self, *args, **kwargs):
+        form = self.form_class(self.request.POST or None)
+        if form.is_valid():
+            form.instance.address_link = None
+            form.save()
+        return
+    # def get_success_url(self):
+    #     url = self.request.GET.get('url')
+    #     return redirect(url) if url and url is not None else redirect('com:profile')
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super(AddAddressView, self).get_context_data(**kwargs)
+    #     form = AddAddressForm
+    #
+    #     context['form'] = form
+    #     return context
+    #
+    # def form_valid(self, form):
+    #     return super(AddAddressView, self).form_valid(form)
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(AddAddressView, self).dispatch(request, *args, **kwargs)
 
 
 class AddSubscriber(CreateView):

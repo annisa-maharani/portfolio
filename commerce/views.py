@@ -61,6 +61,9 @@ class CheckoutView(View, LoginRequiredMixin):
                 payment = form.cleaned_data['payment_option']
 
                 address = self.request.POST.get('address')
+                if not address:
+                    messages.info(self.request, "You dont Choices the address!")
+                    return redirect('/')
                 address = Address.objects.get(address_link=address)
 
                 order.address__address_link = address
@@ -253,3 +256,12 @@ def stripe_webhook(request):
     # Passed signature verification
     return HttpResponse(status=200)
 
+
+class ProfileView(View):
+    def get(self, *args, **kwargs):
+
+        return render
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProfileView, self).dispatch(request, *args, **kwargs)

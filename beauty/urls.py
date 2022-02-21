@@ -6,6 +6,7 @@ app_name = 'beauty'
 urlpatterns = [
     path('', MainPage.as_view(), name='home'),
     path('post-list', PageListView.as_view(), name='list'),
+    path('address/create', AddAddressView.as_view(), name='add-address'),
     path('add-subs', AddSubscriber.as_view(), name='add-subs'),
     path('<link>/comment', AddComment.as_view(), name='add-comment'),
     path('<link>/like', add_likes, name='like'),
