@@ -9,7 +9,7 @@ def link_generator(length: int):
     return ''.join(random.sample(raw, length))
 
 
-def address_link(request):
+def address_default(request):
     address = Address.objects.filter(user=request.user)
     if address.exists():
         address = address.filter(default=True)

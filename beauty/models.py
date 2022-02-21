@@ -64,3 +64,9 @@ class Address(models.Model):
         if self.default:
             return f"{self.user}'s main address"
         return f"{self.user}'s address"
+
+    def address_name(self):
+        length = len(str(self.detailed_address)) // 2
+        if self.default:
+            return f"{self.detailed_address[:length]} - main address"
+        return f"{self.detailed_address[:length]}"

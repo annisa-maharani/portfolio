@@ -16,8 +16,9 @@
                             {% for add in address %}
                             <div class="form-check">
                                 <input type="radio" name="address" id="address-{{ add.pk }}" class="form-check-input" value="{{ add.address_link }}">
-                                <label for="address-{{ add.pk }}" class="form-check-label">{{ add.detailed_address  }}</label>
+                                <label for="address-{{ add.pk }}" class="form-check-label">{{ add.address_name }}</label>
                             </div>
+                            <a href="{% url 'beauty:add-address' %}?url={% url 'com:checkout' %}" class="text-body">Add New Address</a>
                             {% endfor %}
                             {% else %}
                             <a href="{% url 'beauty:add-address' %}?url={% url 'com:checkout' %}" class="btn btn-primary">Add Your Address </a>

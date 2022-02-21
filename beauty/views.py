@@ -8,7 +8,7 @@ from django.db.models import Q as __
 from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from .utils import link_generator
+from .utils import link_generator, address_default
 
 links = 'link'
 p_links = 'p_link'
@@ -53,6 +53,9 @@ class AddAddressView(View):
                     link = link_generator(12)
                 else:
                     break
+            default = address_default(self.request)
+            if not default:
+                form.instance.default = True
 
             form.instance.address_link = link
             form.instance.user = self.request.user
