@@ -29,6 +29,21 @@ class MainPage(TemplateView):
         return context
 
 
+class AddressList(ListView):
+    model = Address
+    template_name = 'beauty/address.html'
+    ordering = '-id'
+    paginate_by = 10
+    context_object_name = 'address'
+
+    def get_queryset(self):
+        return Address.objects.filter(user=self.request.user).order_by(self.ordering)
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(AddressList, self).dispatch(request, *args, **kwargs)
+
+
 class AddAddressView(View):
     model = Address
     template_name = 'beauty/forms.html'
@@ -72,7 +87,10 @@ class AddAddressView(View):
 class UpdateAddress(UpdateView):
     model = Address
     template_name = 'beauty/forms.html'
-    form_class = None
+    form_class = UpdateAddressForm
+    query_pk_and_slug = True
+    slug_field = 'address_link'
+    slug_url_kwarg = 'address_link'
 
 
 class AddSubscriber(CreateView):

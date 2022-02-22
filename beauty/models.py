@@ -39,7 +39,7 @@ class ProductComment(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
     image = models.ImageField(upload_to='profile/', null=True, blank=True)
     phone = models.CharField(max_length=255)
 
@@ -53,7 +53,8 @@ class UserProfile(models.Model):
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    phone = models.CharField(max_length=255, verbose_name="Nomor Telepon : ", default='')
+    address_link = models.SlugField(default='', max_length=255)
+    phone = models.CharField(max_length=255, verbose_name="Nomor Telepon : ", default='', null=True, blank=True)
     address_link = models.SlugField(max_length=255)
     post_code = models.CharField(max_length=255)
     main_address = models.TextField()

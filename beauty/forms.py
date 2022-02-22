@@ -37,3 +37,18 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
+
+
+class UpdateAddressForm(forms.ModelForm):
+    class Meta:
+        model = Address
+        fields = ['phone', 'post_code', 'main_address', 'detailed_address', 'default', 'mark_as']
+
+        widget = {
+            'phone': forms.TextInput(attrs={'placeholder': 'Fill this field if you have different phone number'}),
+            # 'phone': forms.TextInput(attrs={'placeholder': 'Fill this field if you have different phone number'})
+        }
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.fields['phone'].widgets.attrs.update({'placeholder': 'Fill this field if you have different phone number'})
