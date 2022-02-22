@@ -1,5 +1,6 @@
 from django import forms
-from .models import Subscriber, PostComment, ProductComment, Address
+from .models import Subscriber, PostComment, ProductComment, Address, UserProfile
+from django.contrib.auth.models import User
 
 
 class AddSubscriberForm(forms.ModelForm):
@@ -24,3 +25,15 @@ class AddProductCommentForm(forms.ModelForm):
     class Meta:
         model = ProductComment
         fields = ['name', 'comment']
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['phone', 'image']
+
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name', 'email']

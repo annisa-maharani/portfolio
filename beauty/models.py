@@ -53,6 +53,7 @@ class UserProfile(models.Model):
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    phone = models.CharField(max_length=255, verbose_name="Nomor Telepon : ", default='')
     address_link = models.SlugField(max_length=255)
     post_code = models.CharField(max_length=255)
     main_address = models.TextField()
@@ -68,5 +69,5 @@ class Address(models.Model):
     def address_name(self):
         length = len(str(self.detailed_address)) // 2
         if self.default:
-            return f"{self.detailed_address[:length]} - main address"
-        return f"{self.detailed_address[:length]}"
+            return f"{self.detailed_address[:length]}.... - main address"
+        return f"{self.detailed_address[:length]}...."

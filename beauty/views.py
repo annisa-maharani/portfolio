@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from .utils import link_generator, address_default
-
+from django.contrib import messages
 links = 'link'
 p_links = 'p_link'
 
@@ -53,6 +53,7 @@ class AddAddressView(View):
                     link = link_generator(12)
                 else:
                     break
+
             default = address_default(self.request)
             if not default:
                 form.instance.default = True
@@ -66,6 +67,12 @@ class AddAddressView(View):
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super(AddAddressView, self).dispatch(request, *args, **kwargs)
+
+
+class UpdateAddress(UpdateView):
+    model = Address
+    template_name = 'beauty/forms.html'
+    form_class = None
 
 
 class AddSubscriber(CreateView):
@@ -128,6 +135,38 @@ class PageListView(ListView):
 
         context['desk'] = desk
         return context
+
+
+class UpdateProfileView(View):
+    def get(self, *args, **kwargs):
+        user = self.request.user
+        profile = UserProfile.objects.filter(user=user)
+        form = UserForm(instance=user)
+        e_form = UserProfileForm(instance=profile[0]) if profile.exists() else UserProfileForm()
+
+        context = {
+            'form': form,
+            'e_form': e_form,
+        }
+
+        return render(self.request, 'beauty/pr_form.html', context)
+
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        form = UserForm(self.request.POST or None, instance=user)
+        profile = UserProfile.objects.filter(user=user)
+        e_form = UserProfileForm(self.request.POST or None, self.request.POST or None, instance=user) if profile.exists() else UserProfileForm(self.request.POST or None, self.request.FILES or None)
+
+        if form.is_valid() and e_form.is_valid():
+            form.save()
+            e_form.instance.user = self.request.user
+            e_form.save()
+            messages.info(self.request, "Profile Updated ! ")
+        return redirect('beauty:profile')
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(UpdateProfileView, self).dispatch(request, *args, **kwargs)
 
 
 class AddComment(CreateView):
@@ -268,3 +307,15 @@ def pro_likes(request, p_link):
             product.p_likes += 1
             product.save()
     return HttpResponseRedirect(reverse('beauty:pro-detail', args=[p_link]))
+
+
+class ProfileView(View):
+    def get(self, *args, **kwargs):
+        user = self.request.user
+        context = None
+
+        return render(self.request, 'beauty/profile.html', context)
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProfileView, self).dispatch(request, *args, **kwargs)

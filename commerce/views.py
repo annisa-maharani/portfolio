@@ -149,7 +149,7 @@ class PaymentSuccess(View):
 
 
 class PaymentCancel(TemplateView, LoginRequiredMixin):
-    template_name = None
+    template_name = 'com/pay/cancel.html'
 
 
 @login_required(login_url='/accounts/login/')
@@ -255,13 +255,3 @@ def stripe_webhook(request):
         print('Unhandled event type {}'.format(event['type']))
     # Passed signature verification
     return HttpResponse(status=200)
-
-
-class ProfileView(View):
-    def get(self, *args, **kwargs):
-
-        return render
-
-    @method_decorator(login_required(login_url='/accounts/login/'))
-    def dispatch(self, request, *args, **kwargs):
-        return super(ProfileView, self).dispatch(request, *args, **kwargs)

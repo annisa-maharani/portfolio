@@ -13,6 +13,12 @@ urlpatterns = [
 ]
 
 urlpatterns += [
+    path('profile', ProfileView.as_view(), name='profile'),
+    path('profile/update/profile', UpdateProfileView.as_view(), name='update-profile'),
+
+]
+
+urlpatterns += [
     path('products', ProductList.as_view(), name='pro-list'),
 
 ]
