@@ -53,7 +53,6 @@ class UserProfile(models.Model):
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    address_link = models.SlugField(default='', max_length=255)
     phone = models.CharField(max_length=255, verbose_name="Nomor Telepon : ", default='', null=True, blank=True)
     address_link = models.SlugField(max_length=255)
     post_code = models.CharField(max_length=255)

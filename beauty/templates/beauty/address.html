@@ -5,7 +5,8 @@
 {% block content %}
 <div class="row mx-auto my-5">
     <div class="col-10 col-lg-10 mx-auto bg-white py-3">
-        <div class="container bg-white">
+        <div class="container-fluid"><a href="{% url 'beauty:add-address' %}" class="btn btn-primary float-right">Add Address</a></div>
+        <div class="container mt-3 bg-white">
             {% for add in address %}
             <div class="card my-4">
                 <div class="card-body">
@@ -23,7 +24,7 @@
                         {% endif %}
                     </div>
                     <a href="{% url 'beauty:update-address' add.address_link %}" class="card-link"> Update </a>
-                    <a href="#" class="card-link text-danger"> Delete <i class="bi bi-trash"></i> </a>
+                    <a href="{% url 'beauty:delete-address' add.address_link %}" class="card-link text-danger"> Delete <i class="bi bi-trash"></i> </a>
                 </div>
             </div>
             {% endfor %}

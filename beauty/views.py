@@ -77,7 +77,7 @@ class AddAddressView(View):
             form.instance.user = self.request.user
             form.save()
 
-        return redirect(url) if url and url is not None else redirect('beauty:profile')
+        return redirect(url) if url and url is not None else redirect('beauty:address-list')
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
@@ -91,6 +91,20 @@ class UpdateAddress(UpdateView):
     query_pk_and_slug = True
     slug_field = 'address_link'
     slug_url_kwarg = 'address_link'
+
+    def get_success_url(self):
+        return reverse('beauty:address-list')
+
+
+class AddressDelete(DeleteView):
+    model = Address
+    template_name = 'beauty/forms.html'
+    query_pk_and_slug = True
+    slug_field = 'address_link'
+    slug_url_kwarg = 'address_link'
+
+    def get_success_url(self):
+        return reverse('beauty:address-list')
 
 
 class AddSubscriber(CreateView):
