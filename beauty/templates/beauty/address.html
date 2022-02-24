@@ -5,8 +5,13 @@
 {% block content %}
 <div class="row mx-auto my-5">
     <div class="col-10 col-lg-10 mx-auto bg-white py-3">
-        <div class="container-fluid"><a href="{% url 'beauty:add-address' %}" class="btn btn-primary float-right">Add Address</a></div>
         <div class="container mt-3 bg-white">
+            <div class="card border-0">
+                <div class="card-body">
+                    <a href="{% url 'beauty:profile' %}" class="btn btn-secondary float-center">Back</a>
+                    <a href="{% url 'beauty:add-address' %}" class="btn btn-primary float-right">Add Address</a>
+                </div>
+            </div>
             {% for add in address %}
             <div class="card my-4">
                 <div class="card-body">
