@@ -13,7 +13,7 @@ urlpatterns = [
 
 urlpatterns += [
     path('profile', ProfileView.as_view(), name='profile'),
-    path('profile/update/profile', UpdateProfileView.as_view(), name='update-profile'),
+    path('profile/update', UpdateProfileView.as_view(), name='update-profile'),
     path('profile/address', AddressList.as_view(), name='address-list'),
     path('profile/address/create', AddAddressView.as_view(), name='add-address'),
     path('profile/address/<slug:address_link>', UpdateAddress.as_view(), name='update-address'),

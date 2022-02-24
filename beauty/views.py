@@ -187,18 +187,26 @@ class UpdateProfileView(View):
         user = self.request.user
         form = UserForm(self.request.POST or None, instance=user)
         profile = UserProfile.objects.filter(user=user)
-        e_form = UserProfileForm(self.request.POST or None, self.request.POST or None, instance=user) if profile.exists() else UserProfileForm(self.request.POST or None, self.request.FILES or None)
+        e_form = UserProfileForm(self.request.POST or None, self.request.FILES or None, instance=user) if profile.exists() else UserProfileForm(self.request.POST or None, self.request.FILES or None)
 
-        if form.is_valid() and e_form.is_valid():
+        if form.is_valid():
             form.save()
-            e_form.instance.user = self.request.user
-            e_form.save()
-            messages.info(self.request, "Profile Updated ! ")
+            if e_form.is_valid():
+                phone = e_form.cleaned_data['phone']
+                image = e_form.cleaned_data['image']
+                e_user = UserProfile.objects.filter(user=user)
+                e_user = e_user[0] if e_user.exists() else UserProfile(user=user, phone=phone, image=image).save()
+                e_user.phone = phone
+                e_user.image = image
+                e_user.user = user
+                e_user.save()
+                messages.info(self.request, "Profile Updated ! ")
+
         return redirect('beauty:profile')
 
-    @method_decorator(login_required(login_url='/accounts/login/'))
-    def dispatch(self, request, *args, **kwargs):
-        return super(UpdateProfileView, self).dispatch(request, *args, **kwargs)
+    # @method_decorator(login_required(login_url='/accounts/login/'))
+    # def dispatch(self, request, *args, **kwargs):
+    #     return super(UpdateProfileView, self).dispatch(request, *args, **kwargs)
 
 
 class AddComment(CreateView):
@@ -344,7 +352,9 @@ def pro_likes(request, p_link):
 class ProfileView(View):
     def get(self, *args, **kwargs):
         user = self.request.user
-        context = None
+        context = {
+            'user': user
+        }
 
         return render(self.request, 'beauty/profile.html', context)
 
