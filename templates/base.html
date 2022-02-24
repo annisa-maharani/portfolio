@@ -98,7 +98,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Pencarian Laman Produk</h5>
+                <h5 class="modal-title" id="exampleModalLabel"> Pesan </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -145,6 +145,7 @@
                     <a class="nav-link" href="#modalSearch2" data-toggle="modal">Cari Halaman Produk <i class="bi bi-search"></i></a>
                 </div>
             </li>
+            <li class="nav-item"><a href="{% url 'beauty:profile' %}" class="nav-link">MyAccount <i class="fas fa-user"></i></a></li>
             <li class="nav-item">
                 <a href="{% url 'com:order' %}" class="nav-link"><i class="bi bi-cart2"></i> {{ request.user | cart_item_counter }} </a>
             </li>

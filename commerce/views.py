@@ -63,7 +63,7 @@ class CheckoutView(View, LoginRequiredMixin):
                 address = self.request.POST.get('address')
                 if not address:
                     messages.info(self.request, "You dont Choices the address!")
-                    return redirect('/')
+                    return redirect('com:checkout')
                 address = Address.objects.get(address_link=address)
 
                 order.address__address_link = address
