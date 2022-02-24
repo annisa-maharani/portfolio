@@ -250,8 +250,47 @@ def stripe_webhook(request):
     # Handle the event
     if event['type'] == 'payment_intent.succeeded':
         payment_intent = event['data']['object']
+        print(payment_intent)
     # ... handle other event types
     else:
         print('Unhandled event type {}'.format(event['type']))
     # Passed signature verification
     return HttpResponse(status=200)
+
+
+# TODO : register to url
+class MyOngoingItem(ListView):
+    model = Order
+    context_object_name = 'items'
+    template_name = None
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user, ordered=True, accepted=False)
+
+    @method_decorator(login_required(login_url='/accounts/loigin/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(MyOngoingItem, self).dispatch(request, *args, **kwargs)
+
+
+class MyOrderedItem(ListView):
+    model = Order
+    template_name = None
+    context_object_name = 'items'
+
+    def get_queryset(self):
+        return Order.objects.filter(user=self.request.user, ordered=True, accepted=True)
+
+    @method_decorator(login_required(login_url='/accounts/loogin/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(MyOrderedItem, self).dispatch(request, *args, **kwargs)
+
+
+class SetProductAccepted(View):
+    def post(self, *args, **kwargs):
+        reff = self.request.POST.get('reff')
+        order = get_object_or_404(Order, reff=reff)
+        order.accepted = True
+        order.accepted_time = timezone.now()
+        order.save()
+        # TODO : give redirect
+        return
