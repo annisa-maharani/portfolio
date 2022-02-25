@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %} On Going To Shipped Products {% endblock %}
+
+{% block content %}
+<div class="row mx-auto my-5">
+    <div class="col-10 col-lg-10 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                {% for item in items %}
+                {{ item }} <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

@@ -262,7 +262,7 @@ def stripe_webhook(request):
 class MyOngoingItem(ListView):
     model = Order
     context_object_name = 'items'
-    template_name = None
+    template_name = 'com/ordered.html'
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user, ordered=True, accepted=False)

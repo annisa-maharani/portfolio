@@ -14,3 +14,10 @@ urlpatterns = [
     path('payment/<method>', PaymentView.as_view(), name='payment'),
     path('webhook/stripe', stripe_webhook, name='stripe-webhook')
 ]
+
+""" url for ordered item """
+
+urlpatterns += [
+    path("ordered", MyOrderedItem.as_view(), name="ordered-item"),
+    path('ordered/on-going', MyOngoingItem.as_view(), name='on-going-item'),
+]

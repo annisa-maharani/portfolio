@@ -8,6 +8,7 @@ from django.urls import reverse
 from .forms import *
 from .utils import link_generator, b_url, staff_required
 from django.http import HttpResponseRedirect
+from .models import Order
 
 p_link = 'p_link'
 
@@ -137,3 +138,9 @@ class ReviewProductView(DetailView):
     @method_decorator(staff_required)
     def dispatch(self, request, *args, **kwargs):
         return super(ReviewProductView, self).dispatch(request, *args, **kwargs)
+
+
+class OnGoingUserOrderList(ListView):
+    model = Order
+    context_object_name = 'items'
+    template_name = 'core/on_going.html'
