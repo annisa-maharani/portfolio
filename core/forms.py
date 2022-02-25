@@ -1,5 +1,6 @@
 from django import forms
 from django.apps import apps
+from .models import Order, Shipping
 
 Product = apps.get_model('backend', 'ProductReview')
 
@@ -14,3 +15,8 @@ class ProductForm(forms.ModelForm):
             'p_desc': forms.TextInput()
         }
 
+
+class SetShippingForm(forms.ModelForm):
+    class Meta:
+        model = Shipping
+        fields = ['services', 'receipt_number', 'receipt_img']

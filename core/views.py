@@ -144,3 +144,29 @@ class OnGoingUserOrderList(ListView):
     model = Order
     context_object_name = 'items'
     template_name = 'core/on_going.html'
+
+    def get_queryset(self):
+        return Order.objects.filter(ordered=True)
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+
+class SetShipped(CreateView):
+    model = Shipping
+    template_name = None
+    form_class = SetShippingForm
+    
+    def get_success_url(self):
+        return 
+    
+    def form_valid(self, form):
+        
+        return super().form_valid(form)
+    
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+    
+    

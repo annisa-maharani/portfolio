@@ -12,3 +12,8 @@ urlpatterns = [
     path('preview/<p_link>', ReviewProductView.as_view(), name='pr-preview'),
     path("on-going/", OnGoingUserOrderList.as_view(), name="on-going-list"),
 ]
+
+urlpatterns += [
+    # path('ordered', )
+]
+

@@ -8,7 +8,14 @@
         <div class="card">
             <div class="card-body">
                 {% for item in items %}
-                {{ item }} <br>
+                    {{ item }}'s order status : 
+                    {% if item.accepted %}
+                    <a class="btn btn-success disabled">Accepted</a>
+                    {% elif item.shipped %}
+                    item is shipped and waited the user accepted the item                    
+                    {% else %}
+                    <a href="" class="btn btn-primary">set shipped</a>
+                    {% endif %}
                 {% endfor %}
             </div>
         </div>

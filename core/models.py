@@ -1,3 +1,4 @@
+from os import path
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -38,6 +39,7 @@ class Order(models.Model):
     accepted_time = models.DateTimeField(null=True, blank=True)
     shipped = models.DateTimeField(null=True, blank=True)
     reff = models.SlugField(max_length=255, default='')
+    shipping = models.ForeignKey('Shipping', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -55,3 +57,16 @@ class Coupon(models.Model):
 
     def __str__(self):
         return self.code
+
+
+class Shipping(models.Model):
+    reff = models.SlugField(max_length=255)
+    services = models.CharField(max_length=255)
+    receipt_number = models.CharField(max_length=255)
+    receipt_img = models.FileField(upload_to='ship/')
+
+    def filename(self):
+        return path.basename(self.receipt_img)
+
+    def __str__(self):
+        return self.reff
