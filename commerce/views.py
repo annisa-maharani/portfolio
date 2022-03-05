@@ -11,8 +11,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from .forms import CheckoutForm
 from django.conf import settings
-import stripe, datetime
+import stripe, datetime, pytz
 from django.views.decorators.csrf import csrf_exempt
+from .utils import link_generator
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -102,7 +103,7 @@ class PaymentView(View):
 
         host = self.request.get_host()
 
-        success_url = f"http://{host}{reverse('com:payment-success')}"
+        success_url = f"http://{host}{reverse('com:payment-success', kwargs={'pk': order.pk})}"
         cancel_url = f"http://{host}{reverse('com:payment-cancel')}"
 
         checkout_session = stripe.checkout.Session.create(
@@ -133,19 +134,25 @@ class PaymentSuccess(View):
     template_name = 'com/pay/success.html'
 
     def get(self, *args, **kwargs):
-        now = datetime.date.today()
-        order = Order.objects.filter(user=self.request.user, ordered=False)
-        if order.exists():
-            order = order[0]
-            order.ordered = True
-            order.paid_at = now
-            order.save()
+        link = link_generator(32)
+        a_order = Order.objects.all()
+        link_list = [x.reff for x in a_order]
 
-        order = Order.objects.get(user=self.request.user, ordered=True, paid_at=timezone.localtime(timezone.now()).date())
-        context = {
-            'order': order,
-        }
-        return render(self.request, self.template_name, context)
+        while True:
+            if link in link_list:
+                link = link_generator(32)
+            else:
+                break
+
+        if kwargs['pk']:
+            order = Order.objects.get(pk=kwargs['pk'])
+            order.ordered_date = timezone.now()
+            order.reff = link
+            order.ordered = True
+            order.save()
+            return HttpResponseRedirect(reverse('com:on-going-item'))
+
+        return redirect('/')
 
 
 class PaymentCancel(TemplateView, LoginRequiredMixin):
