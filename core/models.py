@@ -39,7 +39,6 @@ class Order(models.Model):
     accepted_time = models.DateTimeField(null=True, blank=True)
     shipped = models.DateTimeField(null=True, blank=True)
     reff = models.SlugField(max_length=255, default='')
-    shipping = models.ForeignKey('Shipping', on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -64,9 +63,10 @@ class Shipping(models.Model):
     services = models.CharField(max_length=255)
     receipt_number = models.CharField(max_length=255)
     receipt_img = models.FileField(upload_to='ship/')
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, default=None)
 
     def filename(self):
         return path.basename(self.receipt_img)
 
     def __str__(self):
-        return self.reff
+        return f"{self.reff} - {self.order.user}"

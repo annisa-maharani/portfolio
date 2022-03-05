@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q as __
@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.urls import reverse
 from .forms import *
-from .utils import link_generator, b_url, staff_required
+from .utils import code_generator, link_generator, b_url, staff_required
 from django.http import HttpResponseRedirect
 from .models import Order
 
@@ -155,18 +155,19 @@ class OnGoingUserOrderList(ListView):
 
 class SetShipped(CreateView):
     model = Shipping
-    template_name = None
+    template_name = 'core/forms.html'
     form_class = SetShippingForm
     
     def get_success_url(self):
         return 
     
     def form_valid(self, form):
-        
+        order = get_object_or_404(Order, reff=self.kwargs['reff'])
+        form.instance.reff = code_generator(14)
+        form.instance.order = order
         return super().form_valid(form)
     
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
-    
     

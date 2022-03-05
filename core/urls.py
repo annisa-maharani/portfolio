@@ -14,6 +14,6 @@ urlpatterns = [
 ]
 
 urlpatterns += [
-    # path('ordered', )
+    path('ship/<reff>', SetShipped.as_view(), name='set-shipped'),
 ]
 

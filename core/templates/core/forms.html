@@ -1,0 +1,22 @@
+{% extends 'my.html' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+
+<div class="rwo mx-auto my-5">
+    <div class="col-10 col-lg-10 mx-auto">
+        <div class="card">
+            <div class="card-body">
+                <form method="POST" enctype="multipart/form-data">
+                    {% load crispy_forms_tags %}
+                    {% csrf_token %}
+                    {{ form | crispy }}
+                    <div class="form-froup"><button class="btn btn-primary"> Save </button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

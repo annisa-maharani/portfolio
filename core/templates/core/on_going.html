@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'my.html' %}
 
 {% block title %} On Going To Shipped Products {% endblock %}
 
@@ -14,7 +14,7 @@
                     {% elif item.shipped %}
                     item is shipped and waited the user accepted the item                    
                     {% else %}
-                    <a href="" class="btn btn-primary">set shipped</a>
+                    <a href="{% url 'my:core:set-shipped' item.reff %}" class="btn btn-primary">set shipped</a>
                     {% endif %}
                 {% endfor %}
             </div>

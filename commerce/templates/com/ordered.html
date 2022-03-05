@@ -8,14 +8,29 @@
         <div class="card">
             <div class="card-body">
 
-                {% for item in items %}
-                <div class="card">
-                    <div class="card-body">
-                        {{ item }}        
+                <div class="accordion" id="accordionExample">
+                    {% for item in items %}
+                    <div class="card">
+                        <div class="card-header bg-white" id="headingOne">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+
+                                    Order reff num - {{ item.reff }}
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapseOne" class="collapse {% if forloop.counter == 1 and not item.accepted %}show{% endif %}" aria-labelledby="headingOne" data-parent="#accordionExample">
+                            {% for pr in item.item.all %}
+                            <div class="card-body" style="background-color: rgba(0,0,0,.03);">
+                                {{ pr }}
+                            </div>
+                            {% endfor %}
+                        </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
-                
+
             </div>
         </div>
     </div>
