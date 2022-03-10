@@ -20,4 +20,5 @@ urlpatterns = [
 urlpatterns += [
     path("ordered", MyOrderedItem.as_view(), name="ordered-item"),
     path('ordered/on-going', MyOngoingItem.as_view(), name='on-going-item'),
+    path('ordered/ship/<slug:reff>', SeeReceipt.as_view(), name='receipt-detail'),
 ]

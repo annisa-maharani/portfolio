@@ -194,12 +194,14 @@ class UpdateProfileView(View):
             if e_form.is_valid():
                 phone = e_form.cleaned_data['phone']
                 image = e_form.cleaned_data['image']
-                e_user = UserProfile.objects.filter(user=user)
-                e_user = e_user[0] if e_user.exists() else UserProfile(user=user, phone=phone, image=image).save()
-                e_user.phone = phone
-                e_user.image = image
-                e_user.user = user
-                e_user.save()
+                e_user = UserProfile.objects.filter(user=user)[0]
+                if not e_user:
+                    UserProfile(user=user, phone=phone, image=image).save()
+                else:
+                    e_user.phone = phone
+                    e_user.image = image
+                    e_user.user = user
+                    e_user.save()
                 messages.info(self.request, "Profile Updated ! ")
 
         return redirect('beauty:profile')
@@ -349,14 +351,15 @@ def pro_likes(request, p_link):
     return HttpResponseRedirect(reverse('beauty:pro-detail', args=[p_link]))
 
 
-class ProfileView(View):
-    def get(self, *args, **kwargs):
-        user = self.request.user
-        context = {
-            'user': user
-        }
+class ProfileView(TemplateView):
+    template_name = 'beauty/profile.html'
 
-        return render(self.request, 'beauty/profile.html', context)
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(*kwargs)
+        user = self.request.user
+
+        context['user'] = user
+        return context
 
     @method_decorator(login_required(login_url='/accounts/login/'))
     def dispatch(self, request, *args, **kwargs):

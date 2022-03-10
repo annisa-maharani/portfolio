@@ -21,6 +21,7 @@ Order = apps.get_model('core', 'Order')
 OrderItem = apps.get_model('core', 'OrderItem')
 Product = apps.get_model('backend', 'ProductReview')
 Address = apps.get_model('beauty', 'Address')
+Shipping = apps.get_model('core', 'Shipping')
 
 
 class OrderSummary(ListView):
@@ -86,6 +87,10 @@ class CheckoutView(View, LoginRequiredMixin):
 
         messages.warning(self.request, "Checkout Failed! ")
         return redirect('com:order')
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super(CheckoutView, self).dispatch(request, *args, **kwargs)
 
 
 class PaymentView(View):
@@ -281,7 +286,7 @@ class MyOngoingItem(ListView):
 
 class MyOrderedItem(ListView):
     model = Order
-    template_name = None
+    template_name = 'com/acc.html'
     context_object_name = 'items'
 
     def get_queryset(self):
@@ -301,3 +306,12 @@ class SetProductAccepted(View):
         order.save()
         # TODO : give redirect
         return
+
+
+class SeeReceipt(DetailView):
+    model = Shipping
+    context_object_name = 'shipping'
+    template_name = 'com/ship_detail.html'
+    query_pk_and_slug = True
+    slug_field = 'reff'
+    slug_url_kwarg = 'reff'

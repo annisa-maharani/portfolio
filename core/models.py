@@ -1,6 +1,7 @@
 from os import path
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 
 class OrderItem(models.Model):
@@ -31,7 +32,7 @@ class Order(models.Model):
     item = models.ManyToManyField(OrderItem)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     start_date = models.DateTimeField(auto_now_add=True)
-    ordered_date = models.DateTimeField()
+    ordered_date = models.DateTimeField(null=True, blank=True)
     ordered = models.BooleanField(default=False)
     address = models.ForeignKey('beauty.Address', on_delete=models.SET_NULL, null=True, blank=True)
     accepted = models.BooleanField(default=False)
@@ -62,10 +63,13 @@ class Shipping(models.Model):
     services = models.CharField(max_length=255)
     receipt_number = models.CharField(max_length=255)
     receipt_img = models.FileField(upload_to='ship/')
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, default=None)
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, default=None, related_query_name='ship', related_name='ship')
 
     def filename(self):
         return path.basename(self.receipt_img)
 
     def __str__(self):
         return f"{self.reff} - {self.order.user}"
+
+    def get_receipt_detail_url(self):
+        return reverse('com:receipt-detail', kwargs={'reff': self.reff})

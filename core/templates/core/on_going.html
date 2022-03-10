@@ -7,16 +7,25 @@
     <div class="col-10 col-lg-10 mx-auto">
         <div class="card">
             <div class="card-body">
-                {% for item in items %}
-                    {{ item }}'s order status : 
-                    {% if item.accepted %}
-                    <a class="btn btn-success disabled">Accepted</a>
-                    {% elif item.shipped %}
-                    item is shipped and waited the user accepted the item                    
-                    {% else %}
-                    <a href="{% url 'my:core:set-shipped' item.reff %}" class="btn btn-primary">set shipped</a>
-                    {% endif %}
-                {% endfor %}
+                <div class="row mx-auto">
+                    {% for item in items %}
+                    <div class="col-lg-3 col-3 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                {{ item }}'s order status :
+                                {% if item.accepted %}
+                                <a class="btn btn-success disabled">Accepted</a>
+                                {% elif item.shipped %}
+                                item is shipped and waited the user accepted the item
+                                {% else %}
+                                <a href="{% url 'my:core:set-shipped' item.reff %}" class="btn btn-primary">set shipped</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
             </div>
         </div>
     </div>
