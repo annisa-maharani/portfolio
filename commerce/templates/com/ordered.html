@@ -16,8 +16,9 @@
                                 <button class="btn btn-link text-left" type="button" data-toggle="collapse" data-target="#collapse{{ item.pk }}" aria-expanded="true" aria-controls="collapse{{ item.pk }}">
                                     Order reff num - {{ item.reff }}
                                 </button>
-                                {{ item.ship　}}
-                                <a href="" class="btn btn-link text-left">See Shipping Detail</a>
+                                {% if item.ship %}
+                                <a href="{{ item.get_receipt_detail_url }}" class="btn btn-link text-left">See Shipping Detail</a>
+                                {% endif %}
                             </h2>
                         </div>
 

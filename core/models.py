@@ -49,6 +49,9 @@ class Order(models.Model):
             total += item.get_final_price()
         return total
 
+    def get_receipt_detail_url(self):
+        return reverse('com:receipt-detail', kwargs={'reff': self.reff})
+
 
 class Coupon(models.Model):
     code = models.CharField(max_length=255)
@@ -63,7 +66,7 @@ class Shipping(models.Model):
     services = models.CharField(max_length=255)
     receipt_number = models.CharField(max_length=255)
     receipt_img = models.FileField(upload_to='ship/')
-    order = models.OneToOneField(Order, on_delete=models.CASCADE, default=None, related_query_name='ship', related_name='ship')
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, default=None, related_name='ship')
 
     def filename(self):
         return path.basename(self.receipt_img)
@@ -71,5 +74,3 @@ class Shipping(models.Model):
     def __str__(self):
         return f"{self.reff} - {self.order.user}"
 
-    def get_receipt_detail_url(self):
-        return reverse('com:receipt-detail', kwargs={'reff': self.reff})

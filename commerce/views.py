@@ -309,9 +309,13 @@ class SetProductAccepted(View):
 
 
 class SeeReceipt(DetailView):
-    model = Shipping
-    context_object_name = 'shipping'
+    model = Order
+    context_object_name = 'item'
     template_name = 'com/ship_detail.html'
     query_pk_and_slug = True
     slug_field = 'reff'
     slug_url_kwarg = 'reff'
+
+    @method_decorator(login_required(login_url='/accounts/login/'))
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
